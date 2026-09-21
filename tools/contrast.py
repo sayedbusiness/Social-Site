@@ -15,7 +15,7 @@ from playwright.sync_api import sync_playwright
 w, h, mobile = int(sys.argv[1]), int(sys.argv[2]), sys.argv[3] == "1"
 TARGETS = [".name__first", ".name__last", ".role", ".pitch", "#h-links", ".seg button", ".lede",
            ".about p:not(.lede):not(.pull)", ".pull", ".who__list li", ".who p", ".step h3", ".step p",
-           ".tile__txt b", ".tile__txt small", ".row__name", ".row__meta", ".foot p", ".foot p a", ".btn--primary span:last-child"]
+           ".tile__txt b", ".tile__txt small", ".row__name", ".row__meta", ".foot p", ".foot p a", ".btn--primary span:last-child", ".panel--contact .row__meta", ".panel--contact .row__name"]
 
 def lum(rgb):
     c = rgb / 255.0

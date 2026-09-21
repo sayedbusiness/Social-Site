@@ -44,7 +44,7 @@ PERSON = {
 ICONS = [
     "instagram-logo", "tiktok-logo", "linkedin-logo", "youtube-logo", "x-logo",
     "facebook-logo", "globe-simple", "phone", "chat-circle-text", "envelope-simple",
-    "user-plus", "export", "copy", "check", "x", "arrow-up-right", "arrow-right",
+    "user-plus", "export", "copy", "check", "x", "arrow-up-right", "arrow-right", "paper-plane-tilt",
 ]
 
 
@@ -91,7 +91,18 @@ def qr_svg() -> str:
 def contact_photo() -> str:
     """Square head-and-shoulders crop on the page's copper-lit ground, base64 JPEG."""
     src = Image.open(ROOT / "assets" / "img" / "sayed-848.webp").convert("RGBA")
-    box = (140, 10, 720, 590)  # face centred; crop coords of the 848x990 cutout
+    # centre the square on the head (phones show contact photos as a circle)
+    alpha = src.split()[3]
+    W, H = src.size
+    xs = []
+    for fy in range(12, 31, 2):
+        row = [x for x in range(W) if alpha.getpixel((x, int(H * fy / 100))) > 128]
+        if row:
+            xs.append((row[0] + row[-1]) / 2)
+    cx = int(sum(xs) / len(xs)) if xs else W // 2
+    side = int(W * 0.68)
+    x0 = max(0, min(W - side, cx - side // 2))
+    box = (x0, 0, x0 + side, side)
     face = src.crop(box)
     s = face.size[0]
     ground = Image.new("RGB", (s, s), (10, 9, 8))

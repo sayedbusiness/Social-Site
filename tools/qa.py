@@ -69,6 +69,12 @@ PROBE = r"""
       if (o === 'hidden' || o === 'clip') { const ar = a.getBoundingClientRect(); L = Math.max(L, ar.left); R = Math.min(R, ar.right); }
     }
     if (R <= L) continue;
+    // text that is cut by a clipping ancestor is a defect too, not a pass
+    const ownText = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+    if (ownText && (r0.right > vw + 0.5 || r0.left < -0.5)) {
+      bad.push({el: 'TEXT CLIPPED ' + el.tagName.toLowerCase() + '.' + (typeof el.className === 'string' ? el.className : ''), left: Math.round(r0.left), right: Math.round(r0.right), w: Math.round(r0.width)});
+      continue;
+    }
     const r = {left: L, right: R, width: R - L};
     if (r.right > vw + 0.5 || r.left < -0.5) {
       bad.push({el: el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.trim().split(/\s+/).join('.') : ''), left: Math.round(r.left), right: Math.round(r.right), w: Math.round(r.width)});
@@ -83,7 +89,7 @@ PROBE = r"""
   const n2 = document.querySelector('.name__last').getBoundingClientRect();
   out.nameRect = {first: [Math.round(n1.left), Math.round(n1.right), Math.round(n1.top), Math.round(n1.bottom)], last: [Math.round(n2.left), Math.round(n2.right), Math.round(n2.top), Math.round(n2.bottom)], size: parseFloat(getComputedStyle(document.querySelector('.name')).fontSize)};
   // head band: hair width at eye level, fraction of the portrait box
-  const hl = fig.left + fig.width * 0.463, hr = fig.left + fig.width * 0.742;
+  const hl = fig.left + fig.width * 0.468, hr = fig.left + fig.width * 0.735;
   out.headBand = [Math.round(hl), Math.round(hr)];
   out.nameHitsHead = Math.max(0, Math.round(n1.right - hl)) + Math.max(0, Math.round(hr - n2.left));
   out.cover = getComputedStyle(document.querySelector('.name')).position === 'absolute';

@@ -60,7 +60,7 @@ def main():
     if B.mean() > 0.6:
         ys_, xs_ = np.where(a2 > 0.5)
         crown = np.zeros_like(a2)
-        crown[: ys_.min() + int(0.12 * (ys_.max() - ys_.min())), :] = 1.0
+        crown[: ys_.min() + int(0.17 * (ys_.max() - ys_.min())), :] = 1.0
         crown = gblur(crown, 5.0)
         lum0 = 0.2126 * col[..., 0] + 0.7152 * col[..., 1] + 0.0722 * col[..., 2]
         sat = col.max(-1) - col.min(-1)
@@ -73,6 +73,27 @@ def main():
     lum2 = np.where(lum > 0.78, 0.78 + (lum - 0.78) * 0.55, lum)
     col = col * (lum2 / np.maximum(lum, 1e-4))[..., None] * np.array([1.035, 1.0, 0.935], np.float32)
     col = np.clip((col - 0.5) * 1.04 + 0.5 - 0.012, 0, 1)
+    # one grade with the room: warm highlights, bronze in the shadows
+    lum = 0.2126 * col[..., 0] + 0.7152 * col[..., 1] + 0.0722 * col[..., 2]
+    hi = np.clip((lum - 0.45) / 0.4, 0, 1)[..., None]
+    lo = np.clip((0.35 - lum) / 0.35, 0, 1)[..., None]
+    col = np.clip(col * (1 + hi * np.array([0.03, 0.0, -0.05])) + lo * np.array([0.012, 0.007, 0.0]), 0, 1)
+
+    # baked backlight: the key light sits behind and above the head, so only the
+    # edges whose outward normal faces it catch light (hair crown, shoulder tops).
+    # Built from the alpha itself, so it follows every strand; nothing is drawn around him.
+    ab = gblur(a2, 2.0)
+    gy_, gx_ = np.gradient(ab)
+    mag = np.sqrt(gx_ ** 2 + gy_ ** 2) + 1e-6
+    nx, ny = -gx_ / mag, -gy_ / mag
+    Ld = np.array([-0.18, -1.0]); Ld /= np.linalg.norm(Ld)
+    facing = np.clip(nx * Ld[0] + ny * Ld[1], 0, 1) ** 1.4
+    edge = np.clip((a2 - gblur(a2, 3.5)) * 3.0, 0, 1)
+    ys_, xs_ = np.where(a2 > 0.5)
+    yy = (np.arange(a2.shape[0]) - ys_.min()) / max(1, ys_.max() - ys_.min())
+    wy = np.clip(1 - (yy - 0.40) / 0.25, 0, 1)[:, None]
+    rim = (edge * facing * wy * 0.95)[..., None]
+    col = 1 - (1 - col) * (1 - rim * np.array([1.0, 0.72, 0.44]))
 
     # crop: shoulders to the frame edges, 5% air above the hair, page aspect
     ys, xs = np.where(a2 > 0.5)

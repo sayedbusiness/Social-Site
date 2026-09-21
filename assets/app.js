@@ -95,29 +95,6 @@
   wide.addEventListener('change', layoutPanels);
   layoutPanels();
 
-  /* ── panel light: two discs follow the pointer (transform only) ───────── */
-  if (fine.matches) {
-    panels.forEach((panel) => {
-      const glow = $('.panel__glow', panel);
-      const spot = $('.panel__spot', panel);
-      let raf = 0;
-      let x = 0;
-      let y = 0;
-      panel.addEventListener('pointermove', (e) => {
-        const r = panel.getBoundingClientRect();
-        x = e.clientX - r.left;
-        y = e.clientY - r.top;
-        if (raf) return;
-        raf = requestAnimationFrame(() => {
-          raf = 0;
-          const t = `translate3d(${x}px,${y}px,0)`;
-          glow.style.transform = t;
-          spot.style.transform = t;
-        });
-      }, { passive: true });
-    });
-  }
-
   /* ── Save contact: acknowledge the tap; the browser opens the card ─────── */
   const save = $('[data-save]');
   if (save) {
@@ -130,38 +107,37 @@
     });
   }
 
-  /* ── reveal: only content still below the fold is armed, so nothing that
-        is already on screen can ever blink out ───────────────────────────── */
+  /* ── entrances: three authored ones, not one effect on every block.
+        The link rows deal in, the audience lines rise like the name, the pull
+        quote's rule draws. Only content still below the fold is armed, so
+        nothing already on screen can blink out. */
   if ('IntersectionObserver' in window && !reduce.matches) {
     const settle = (el) => {
-      const done = () => {
+      const kids = el.querySelectorAll('.row, li').length;
+      setTimeout(() => {
         el.classList.remove('will-reveal', 'is-in');
-        el.style.removeProperty('--i');
-      };
-      setTimeout(done, 1300 + (parseInt(el.style.getPropertyValue('--i') || '0', 10) * 70));
+      }, 1500 + kids * 90);
     };
     const io = new IntersectionObserver((entries) => {
-      let n = 0;
-      entries
-        .filter((e) => e.isIntersecting || e.boundingClientRect.top < 0)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-        .forEach((e) => {
-          const el = e.target;
-          el.style.setProperty('--i', String(Math.min(n++, 5)));
-          el.classList.add('is-in');
-          io.unobserve(el);
-          settle(el);
-        });
-    }, { rootMargin: '0px 0px -14% 0px', threshold: 0 });
+      entries.forEach((e) => {
+        if (!e.isIntersecting && e.boundingClientRect.top >= 0) return;
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+        settle(e.target);
+      });
+    }, { rootMargin: '0px 0px -18% 0px', threshold: 0 });
 
     const fold = innerHeight * 0.92;
     $$('[data-reveal]').forEach((el) => {
       if (el.getBoundingClientRect().top < fold) return;
+      $$('.panel', el).forEach((panel) => {
+        $$('.row', panel).forEach((row, n) => row.style.setProperty('--n', String(n)));
+      });
+      $$('li', el).forEach((li, n) => li.style.setProperty('--n', String(n)));
       el.classList.add('will-reveal');
       io.observe(el);
     });
 
-    // safety net: arriving at the very bottom reveals anything left
     const tail = document.createElement('div');
     tail.setAttribute('aria-hidden', 'true');
     tail.style.cssText = 'height:1px';

@@ -30,7 +30,31 @@ On desktop the name frames the face: SAYED left of the head, SULTANI right of it
   no pricing or fee-model language, and no results, testimonials or client counts.
 - The CTA wording is "Apply to work with us", and it goes to kovamedia.agency/apply.
 
+## Finish review (2026-09-21): the hero was rebuilt
+An independent impeccable finish review returned REBUILD on the hero sitting. Done:
+- Deleted the CSS copper "rim" (it read as a sticker outline) and the portrait's
+  drop-shadow (its own mask clipped it, which left a straight seam beside the shoulder).
+- `tools/portrait.py` now bakes a strand-accurate backlight into the photo. Only the
+  edges facing the light (hair crown, shoulder tops) catch it. It also applies one
+  warm grade shared with the room and cleans the white specks from the curls.
+- The key light now sits behind the head: a lighter painted patch under it plus a
+  gentle glow. The cloth reads as fabric (hanging folds and brushwork, less swirl).
+- Dust lives only in a beam from upper camera-left, never twinkles, and fades out
+  once reading starts. Nothing moves behind body copy (Kova's calm rule).
+- Phones: the portrait takes all the spare hero height (grid `1fr` row).
+- Contact is now the same row family as the links. Apply is the one distinguished row.
+- The entrances are now three authored ones instead of one blur-rise on every block.
+  Link rows deal in, the audience lines rise like the name, and the pull-quote rule draws.
+- Removed the pointer spotlight on panels and the shine sweep on the button.
+- Desktop: the K lines up with the S of SAYED; Share and Save contact line up with
+  the I of SULTANI.
+- How step 1 no longer describes billing ("You own the accounts").
+Still open from the review: a relit portrait and a photographed cloth need real
+images (Sayed: see docs/IMAGE-PROMPTS.md).
+
 ## Gotchas already paid for
+- The hero grid needs `grid-template-columns:minmax(0,1fr)`. An auto column grows to the
+  oversized portrait and silently shifts the name off-centre, and the hero's clip hides it.
 - The desktop name geometry is MEASURED. SAYED is 4.26em and SULTANI 5.27em (Archivo
   wdth 125 / wght 800 / -0.02em). The caps' centre sits .491em below the box top. The
   silhouette at 30-41% of the portrait's height spans x .463-.742. Re-measure if the

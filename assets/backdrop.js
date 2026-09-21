@@ -35,16 +35,21 @@ float fbm(vec2 p){
 void main(){
   vec2 p = (gl_FragCoord.xy - vec2(uRes.x * 0.5, uRes.y)) / uUnit + uSeed;
   vec2 q = vec2(fbm(p), fbm(p + vec2(5.2, 1.3)));
-  vec2 r = vec2(fbm(p + 3.4 * q + vec2(1.7, 9.2)), fbm(p + 3.4 * q + vec2(8.3, 2.8)));
-  float f = fbm(p + 2.8 * r);
+  vec2 r = vec2(fbm(p + 2.1 * q + vec2(1.7, 9.2)), fbm(p + 2.1 * q + vec2(8.3, 2.8)));
+  float f = fbm(p + 1.7 * r);
   vec3 umber  = vec3(0.090, 0.066, 0.047);
   vec3 bronze = vec3(0.231, 0.157, 0.071);
   vec3 grey   = vec3(0.400, 0.392, 0.392);
   vec3 c = mix(umber, bronze, smoothstep(0.30, 0.80, f));
   c = mix(c, grey * 0.58, smoothstep(0.52, 0.95, r.x) * 0.5);
   c *= 0.74 + 0.48 * smoothstep(0.18, 0.86, q.y);
-  float brush = noise(vec2(p.x * 7.0, p.y * 1.3) + r * 2.4);
-  c *= 0.95 + 0.1 * brush;
+  // hanging folds: slow vertical light and shade, the way a cloth falls from a stand
+  float fold = noise(vec2(p.x * 1.9, p.y * 0.22) + vec2(4.0, 0.0));
+  c *= 0.82 + 0.34 * smoothstep(0.15, 0.85, fold);
+  // brushwork: short strokes in two directions, dry at the edges
+  float b1 = noise(vec2(p.x * 9.0, p.y * 2.2) + r * 3.0);
+  float b2 = noise(vec2(p.x * 2.4, p.y * 8.5) - q * 2.0);
+  c *= 0.9 + 0.12 * b1 + 0.08 * b2;
   gl_FragColor = vec4(c, 1.0);
 }`;
 
@@ -63,6 +68,8 @@ uniform float uDust;
 uniform float uGrain;
 uniform vec4 uMap;
 uniform float uGain;
+uniform vec2 uBeamFrom;
+uniform float uCalm;
 
 float dust(vec2 fc, float t){
   float acc = 0.0;
@@ -77,11 +84,19 @@ float dust(vec2 fc, float t){
       pos += 0.1 * vec2(sin(t * 0.45 + h * 21.0), cos(t * 0.38 + h * 17.0));
       float rad = (0.035 + 0.05 * hash(id + 4.1)) * (1.0 + fl * 0.45);
       float m = smoothstep(rad, rad * 0.15, length(f - pos));
-      float tw = 0.45 + 0.55 * sin(t * (0.8 + h * 1.3) + h * 50.0);
-      acc += m * max(tw, 0.0) * (1.0 - fl * 0.25);
+      acc += m * (1.0 - fl * 0.25);
     }
   }
   return acc;
+}
+
+// the beam: a soft cone from the lamp (upper camera-left) to the light's spot
+float beam(vec2 fc){
+  vec2 ab = uLight - uBeamFrom;
+  float t = clamp(dot(fc - uBeamFrom, ab) / dot(ab, ab), 0.0, 1.2);
+  float d = length(fc - (uBeamFrom + ab * t));
+  float w = mix(0.06, 0.55, t) * uRadius;
+  return smoothstep(w, w * 0.3, d) * smoothstep(0.05, 0.35, t);
 }
 
 void main(){
@@ -90,7 +105,7 @@ void main(){
   // the cloth hangs taller than the room; scrolling lowers the camera a little
   float v = (uv.y + uExtra) / (1.0 + uExtra) - uPar;
   vec2 w = vec2(noise(uv * vec2(1.8, 2.6) + uTime * 0.035), noise(uv * vec2(1.8, 2.6) + 9.1 - uTime * 0.03)) - 0.5;
-  vec2 tuv = vec2(uv.x, v) + w * vec2(0.012, 0.009);
+  vec2 tuv = vec2(uv.x, v) + w * vec2(0.012, 0.009) * (1.0 - 0.8 * uCalm);
   vec3 albedo = texture2D(uPaint, tuv * uMap.xy + uMap.zw).rgb * uGain;
 
   vec2 d = (fc - uLight) / uRadius;
@@ -99,14 +114,18 @@ void main(){
   float key = exp(-r2 * 1.15);
   float core = exp(-r2 * 4.2);
   vec3 lightCol = vec3(1.0, 0.75, 0.49);
+  // the cloth behind the head is painted lighter, as studio backdrops are
+  albedo = max(albedo, vec3(0.20, 0.14, 0.075) * core);
   vec3 col = albedo * (vec3(0.30, 0.27, 0.24) + lightCol * (key * 1.25 + core * 0.62) * uPower);
-  col += lightCol * core * 0.028 * uPower;
+  col += lightCol * (key * 0.045 + core * 0.11) * uPower;
 
   // a warm floor light rises at the very end of the page
   float floorG = exp(-pow(uv.y / 0.42, 2.0) - pow((uv.x - 0.5) / 0.62, 2.0)) * uEnd;
   col += albedo * lightCol * floorG * 1.7;
 
-  col += lightCol * dust(fc, uTime) * (key * 0.8 + core * 0.7) * uPower * 0.55 * uDust;
+  float bm = beam(fc);
+  col += lightCol * bm * 0.02 * uPower * uDust;
+  col += lightCol * dust(fc, uTime) * bm * (0.55 + key * 0.6) * uPower * 0.6 * uDust;
 
   vec2 vv = (uv - 0.5) * vec2(uRes.x / uRes.y, 1.0);
   float vig = smoothstep(1.1, 0.18, length(vv * vec2(0.82, 1.0)));
@@ -134,7 +153,6 @@ export function start({ reduce = false } = {}) {
 
   const EXTRA = 0.38;           // the cloth is 38% taller than the room
   const fig = document.querySelector('.figure');
-  const rim = document.querySelector('.rim');
   const hero = document.querySelector('.hero');
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -169,7 +187,7 @@ export function start({ reduce = false } = {}) {
     progPaint = program(PAINT);
     progFrame = program(FRAME);
     U.paint = uniforms(progPaint, ['uRes', 'uUnit', 'uSeed']);
-    U.frame = uniforms(progFrame, ['uPaint', 'uRes', 'uTime', 'uLight', 'uRadius', 'uPower', 'uPar', 'uExtra', 'uEnd', 'uDust', 'uGrain', 'uMap', 'uGain']);
+    U.frame = uniforms(progFrame, ['uPaint', 'uRes', 'uTime', 'uLight', 'uRadius', 'uPower', 'uPar', 'uExtra', 'uEnd', 'uDust', 'uGrain', 'uMap', 'uGain', 'uBeamFrom', 'uCalm']);
     buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
@@ -295,7 +313,6 @@ export function start({ reduce = false } = {}) {
   let last = performance.now();
   let raf = 0;
   let born = 0;
-  let lastRim = '';
   let lastSy = -1;
   let idleSince = performance.now();
   let frames = 0;
@@ -326,7 +343,10 @@ export function start({ reduce = false } = {}) {
     gl.uniform1f(U.frame.uExtra, EXTRA);
     const end = Math.min(1, Math.max(0, (sy + vh - (docH - vh * 0.9)) / (vh * 0.9)));
     gl.uniform1f(U.frame.uEnd, end * end * 0.7);
-    gl.uniform1f(U.frame.uDust, reduce ? 0 : 1);
+    // dust belongs to the portrait; once reading starts, nothing moves behind the copy
+    gl.uniform1f(U.frame.uDust, reduce ? 0 : 1 - Math.min(1, Math.max(0, (e - 0.2) / 0.4)));
+    gl.uniform1f(U.frame.uCalm, e);
+    gl.uniform2f(U.frame.uBeamFrom, -0.12 * vw * k, (cssH + 0.18 * vh) * k);
     gl.uniform1f(U.frame.uGrain, Math.max(1, 1.6 * k));
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   }
@@ -365,22 +385,10 @@ export function start({ reduce = false } = {}) {
 
     const warm = Math.min(1, (now - born) / 1800);
     const ease = 1 - Math.pow(1 - warm, 3);
-    const power = (1 - 0.4 * e) * (0.35 + 0.65 * ease) * (1 + 0.03 * Math.sin(t * 0.45));
+    const power = (1 - 0.4 * e) * (0.35 + 0.65 * ease) * (1 + 0.03 * (1 - e) * Math.sin(t * 0.45));
     spring(lx, tx, dt, 0.9);
     spring(ly, ty, dt, 0.9);
     spring(lp, power, dt, 0.5);
-
-    // rim light on the portrait leans toward the key light
-    if (rim && sy < heroH) {
-      const hy = head.y - sy;
-      const dx = lx.x - head.x;
-      const dy = ly.x - hy;
-      const len = Math.hypot(dx, dy) || 1;
-      const reach = Math.min(1, len / (head.h * 0.5));
-      const m = head.h * 0.0065 * reach;
-      const css = `translate3d(${((dx / len) * m).toFixed(1)}px,${((dy / len) * m - head.h * 0.003).toFixed(1)}px,0) scale(1.012)`;
-      if (css !== lastRim) { rim.style.transform = css; lastRim = css; }
-    }
 
     draw(sy);
 
