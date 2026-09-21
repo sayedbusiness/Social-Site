@@ -61,6 +61,8 @@ uniform float uExtra;
 uniform float uEnd;
 uniform float uDust;
 uniform float uGrain;
+uniform vec4 uMap;
+uniform float uGain;
 
 float dust(vec2 fc, float t){
   float acc = 0.0;
@@ -88,7 +90,8 @@ void main(){
   // the cloth hangs taller than the room; scrolling lowers the camera a little
   float v = (uv.y + uExtra) / (1.0 + uExtra) - uPar;
   vec2 w = vec2(noise(uv * vec2(1.8, 2.6) + uTime * 0.035), noise(uv * vec2(1.8, 2.6) + 9.1 - uTime * 0.03)) - 0.5;
-  vec3 albedo = texture2D(uPaint, vec2(uv.x, v) + w * vec2(0.012, 0.009)).rgb;
+  vec2 tuv = vec2(uv.x, v) + w * vec2(0.012, 0.009);
+  vec3 albedo = texture2D(uPaint, tuv * uMap.xy + uMap.zw).rgb * uGain;
 
   vec2 d = (fc - uLight) / uRadius;
   d.y *= 1.08;
@@ -137,6 +140,7 @@ export function start({ reduce = false } = {}) {
 
   let progPaint; let progFrame; let buf; let tex; let fbo;
   let W = 0; let H = 0; let cssW = 0; let cssH = 0; let scale = 1;
+  let cloth = null;   // optional photographed cloth: <div class="backdrop" data-cloth="/assets/img/cloth.jpg">
   let U = {};
 
   function compile(type, src) {
@@ -165,7 +169,7 @@ export function start({ reduce = false } = {}) {
     progPaint = program(PAINT);
     progFrame = program(FRAME);
     U.paint = uniforms(progPaint, ['uRes', 'uUnit', 'uSeed']);
-    U.frame = uniforms(progFrame, ['uPaint', 'uRes', 'uTime', 'uLight', 'uRadius', 'uPower', 'uPar', 'uExtra', 'uEnd', 'uDust', 'uGrain']);
+    U.frame = uniforms(progFrame, ['uPaint', 'uRes', 'uTime', 'uLight', 'uRadius', 'uPower', 'uPar', 'uExtra', 'uEnd', 'uDust', 'uGrain', 'uMap', 'uGain']);
     buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
@@ -211,6 +215,46 @@ export function start({ reduce = false } = {}) {
     gl.uniform2f(U.paint.uSeed, 7.3, 2.1);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  }
+
+
+  // Optional: a photographed, evenly lit painted cloth replaces the procedural
+  // one. The page still lights it; its average brightness is normalised to the
+  // painted cloth's so the room keeps its exposure whatever the photo.
+  function coverMap() {
+    const room = W / (H * (1 + EXTRA));
+    const img = cloth.w / cloth.h;
+    const sx = img > room ? room / img : 1;
+    const sy = img > room ? 1 : img / room;
+    return [sx, sy, 0.5 - 0.5 * sx, 0.5 - 0.5 * sy];
+  }
+  function loadCloth(src) {
+    const im = new Image();
+    im.decoding = 'async';
+    im.onload = () => {
+      try {
+        const probe = document.createElement('canvas');
+        probe.width = 24; probe.height = 24;
+        const c2 = probe.getContext('2d');
+        c2.drawImage(im, 0, 0, 24, 24);
+        const d = c2.getImageData(0, 0, 24, 24).data;
+        let sum = 0;
+        for (let i = 0; i < d.length; i += 4) sum += (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255;
+        const avg = Math.max(0.02, sum / (d.length / 4));
+        const t2 = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, t2);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, im);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        cloth = { tex: t2, w: im.naturalWidth, h: im.naturalHeight, gain: 0.155 / avg };
+        if (reduce || !raf) still();
+      } catch (_) { cloth = null; }
+    };
+    im.src = src;
   }
 
   // ── geometry the light follows ──────────────────────────────────────────
@@ -265,8 +309,11 @@ export function start({ reduce = false } = {}) {
     gl.viewport(0, 0, W, H);
     gl.useProgram(progFrame);
     gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.bindTexture(gl.TEXTURE_2D, cloth ? cloth.tex : tex);
     gl.uniform1i(U.frame.uPaint, 0);
+    const map = cloth ? coverMap() : [1, 1, 0, 0];
+    gl.uniform4f(U.frame.uMap, map[0], map[1], map[2], map[3]);
+    gl.uniform1f(U.frame.uGain, cloth ? cloth.gain : 1);
     gl.uniform2f(U.frame.uRes, W, H);
     gl.uniform1f(U.frame.uTime, t);
     // canvas y is up; the light lives in CSS px with y down
@@ -370,6 +417,7 @@ export function start({ reduce = false } = {}) {
     return;
   }
 
+  if (host.dataset.cloth) loadCloth(host.dataset.cloth);
   born = performance.now();
   lx.x = head.x;
   ly.x = head.y - scrollY - head.h * 0.04;

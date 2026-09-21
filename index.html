@@ -321,6 +321,20 @@ html.sheet-open{overflow:hidden}
   .pull{max-width:24ch}
 }
 
+/* ── short landscape screens (phones sideways, short laptop windows):
+      portrait left, name and actions right ─────────────────────────────── */
+@media (orientation:landscape) and (max-height:619px){
+  .hero{display:grid;grid-template-columns:auto minmax(0,560px);justify-content:center;grid-template-rows:1fr auto auto;column-gap:clamp(20px,4vw,52px);align-items:end;justify-items:start;text-align:left;
+    padding:calc(var(--bar-h) + env(safe-area-inset-top,0px)) max(var(--gutter),env(safe-area-inset-right,0px)) 0 max(var(--gutter),env(safe-area-inset-left,0px));
+    --ph:calc(100svh - var(--bar-h) - env(safe-area-inset-top,0px))}
+  .figure{grid-column:1;grid-row:1/4;margin:0;translate:none;align-self:end}
+  .name{grid-column:2;grid-row:2;margin:0;--nfs:clamp(2rem,min(7.6vw,16svh),4.25rem)}
+  .hero__info{grid-column:2;grid-row:3;display:flex;flex-direction:column;align-items:flex-start;padding-bottom:clamp(14px,5svh,28px)}
+  .role,.pitch{text-align:left}
+  .pitch{max-width:26ch}
+  .hero__actions{width:min(100%,340px);margin-top:clamp(12px,3svh,20px)}
+}
+
 /* ── desktop: the cover sitting ───────────────────────────────────────────
    The name frames the face: SAYED left of the head, SULTANI right of it, the
    caps on the mouth-to-chin band where the silhouette is narrowest.
@@ -334,14 +348,14 @@ html.sheet-open{overflow:hidden}
     --m:clamp(40px,4vw,80px);
     --ph:min(82svh,860px,calc(100svh - 110px));
     --pw:calc(var(--ph) * .8566);
-    --a:4.26; --b:5.27; --band:.29; --hc:.6;
+    --a:4.26; --b:5.27; --band:.29; --hc:.6; --capy:.355;   /* --band --hc --capy: printed by tools/portrait.py */
     --nf:min(190px,calc((100vw - 2 * var(--m) - var(--band) * var(--pw)) / (var(--a) + var(--b) + .7)));
     --gw:calc(var(--band) * var(--pw) + .7 * var(--nf));
     --gx:calc((100vw - (var(--a) + var(--b)) * var(--nf) - var(--gw)) / 2);
     --hx:calc(var(--gx) + var(--a) * var(--nf) + var(--gw) / 2)}
   .figure{position:absolute;margin:0;bottom:0;left:calc(var(--hx) - var(--hc) * var(--pw));height:var(--ph);translate:none}
   .portrait{-webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.6) 88%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.6) 88%,transparent 100%)}
-  .name{position:absolute;z-index:0;left:0;right:0;margin:0;top:calc(max(100svh,640px) - var(--ph) + .355 * var(--ph) - .491 * var(--nf));
+  .name{position:absolute;z-index:0;left:0;right:0;margin:0;top:calc(max(100svh,640px) - var(--ph) + var(--capy) * var(--ph) - .491 * var(--nf));
     --nfs:var(--nf);font-size:var(--nf);line-height:1;white-space:nowrap;text-shadow:0 4px 40px rgba(8,6,4,.45)}
   .name__line{position:absolute;top:0}
   .name__first{left:var(--gx)}

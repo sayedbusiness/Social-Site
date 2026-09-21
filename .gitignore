@@ -4,3 +4,6 @@ node_modules
 __pycache__
 *.pyc
 .impeccable/live
+
+# render temp
+tools/.og@2x.png
