@@ -1,0 +1,414 @@
+/* The studio backdrop.
+   A hand-painted canvas cloth, mottled in the Kova logo's two colours
+   (#666464 grey, #3B2812 bronze), painted ONCE into a texture. Each frame then
+   costs one draw call: sample the cloth with a slow drift, light it with a
+   single copper key light that follows the portrait, the scroll and your
+   pointer, add dust floating in the beam, grain and a vignette.
+   Fails open: no WebGL, no highp, software rendering or reduced motion all
+   leave the CSS room (or one still frame) in place. */
+
+const VERT = `
+attribute vec2 aPos;
+void main(){ gl_Position = vec4(aPos, 0.0, 1.0); }`;
+
+const COMMON = `
+precision highp float;
+float hash(vec2 p){ vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
+float noise(vec2 p){
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  float a = hash(i), b = hash(i + vec2(1.0, 0.0)), c = hash(i + vec2(0.0, 1.0)), d = hash(i + vec2(1.0, 1.0));
+  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+}`;
+
+// The cloth. Domain-warped fbm: grey and bronze clouds on umber, faint brush.
+const PAINT = COMMON + `
+uniform vec2 uRes;
+uniform float uUnit;
+uniform vec2 uSeed;
+float fbm(vec2 p){
+  float s = 0.0, a = 0.5;
+  mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+  for (int i = 0; i < 6; i++){ s += a * noise(p); p = m * p + vec2(3.1, 1.7); a *= 0.5; }
+  return s;
+}
+void main(){
+  vec2 p = (gl_FragCoord.xy - vec2(uRes.x * 0.5, uRes.y)) / uUnit + uSeed;
+  vec2 q = vec2(fbm(p), fbm(p + vec2(5.2, 1.3)));
+  vec2 r = vec2(fbm(p + 3.4 * q + vec2(1.7, 9.2)), fbm(p + 3.4 * q + vec2(8.3, 2.8)));
+  float f = fbm(p + 2.8 * r);
+  vec3 umber  = vec3(0.090, 0.066, 0.047);
+  vec3 bronze = vec3(0.231, 0.157, 0.071);
+  vec3 grey   = vec3(0.400, 0.392, 0.392);
+  vec3 c = mix(umber, bronze, smoothstep(0.30, 0.80, f));
+  c = mix(c, grey * 0.58, smoothstep(0.52, 0.95, r.x) * 0.5);
+  c *= 0.74 + 0.48 * smoothstep(0.18, 0.86, q.y);
+  float brush = noise(vec2(p.x * 7.0, p.y * 1.3) + r * 2.4);
+  c *= 0.95 + 0.1 * brush;
+  gl_FragColor = vec4(c, 1.0);
+}`;
+
+// The light. One copper key light on the cloth, dust in its beam.
+const FRAME = COMMON + `
+uniform sampler2D uPaint;
+uniform vec2 uRes;
+uniform float uTime;
+uniform vec2 uLight;
+uniform float uRadius;
+uniform float uPower;
+uniform float uPar;
+uniform float uExtra;
+uniform float uEnd;
+uniform float uDust;
+uniform float uGrain;
+
+float dust(vec2 fc, float t){
+  float acc = 0.0;
+  for (int L = 0; L < 3; L++){
+    float fl = float(L);
+    float cell = (30.0 + fl * 24.0) * uGrain;
+    vec2 g = (fc - vec2(sin(t * 0.07 + fl) * 9.0, t * (4.0 + fl * 2.5)) * uGrain) / cell;
+    vec2 id = floor(g), f = fract(g);
+    float h = hash(id + fl * 31.7);
+    if (h < 0.40){
+      vec2 pos = 0.28 + 0.44 * vec2(hash(id + 0.37), hash(id + 1.93));
+      pos += 0.1 * vec2(sin(t * 0.45 + h * 21.0), cos(t * 0.38 + h * 17.0));
+      float rad = (0.035 + 0.05 * hash(id + 4.1)) * (1.0 + fl * 0.45);
+      float m = smoothstep(rad, rad * 0.15, length(f - pos));
+      float tw = 0.45 + 0.55 * sin(t * (0.8 + h * 1.3) + h * 50.0);
+      acc += m * max(tw, 0.0) * (1.0 - fl * 0.25);
+    }
+  }
+  return acc;
+}
+
+void main(){
+  vec2 fc = gl_FragCoord.xy;
+  vec2 uv = fc / uRes;
+  // the cloth hangs taller than the room; scrolling lowers the camera a little
+  float v = (uv.y + uExtra) / (1.0 + uExtra) - uPar;
+  vec2 w = vec2(noise(uv * vec2(1.8, 2.6) + uTime * 0.035), noise(uv * vec2(1.8, 2.6) + 9.1 - uTime * 0.03)) - 0.5;
+  vec3 albedo = texture2D(uPaint, vec2(uv.x, v) + w * vec2(0.012, 0.009)).rgb;
+
+  vec2 d = (fc - uLight) / uRadius;
+  d.y *= 1.08;
+  float r2 = dot(d, d);
+  float key = exp(-r2 * 1.15);
+  float core = exp(-r2 * 4.2);
+  vec3 lightCol = vec3(1.0, 0.75, 0.49);
+  vec3 col = albedo * (vec3(0.30, 0.27, 0.24) + lightCol * (key * 1.25 + core * 0.62) * uPower);
+  col += lightCol * core * 0.028 * uPower;
+
+  // a warm floor light rises at the very end of the page
+  float floorG = exp(-pow(uv.y / 0.42, 2.0) - pow((uv.x - 0.5) / 0.62, 2.0)) * uEnd;
+  col += albedo * lightCol * floorG * 1.7;
+
+  col += lightCol * dust(fc, uTime) * (key * 0.8 + core * 0.7) * uPower * 0.55 * uDust;
+
+  vec2 vv = (uv - 0.5) * vec2(uRes.x / uRes.y, 1.0);
+  float vig = smoothstep(1.1, 0.18, length(vv * vec2(0.82, 1.0)));
+  col *= mix(0.32, 1.0, vig);
+
+  col += (hash(floor(fc / uGrain) + 0.5) - 0.5) * 0.026;
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+export function start({ reduce = false } = {}) {
+  const host = document.querySelector('.backdrop');
+  if (!host || host.querySelector('canvas')) return;
+  const doc = document.documentElement;
+  const force = /[?&]forcegl\b/.test(location.search);
+  const canvas = document.createElement('canvas');
+  const attrs = {
+    alpha: false, antialias: false, depth: false, stencil: false,
+    premultipliedAlpha: false, preserveDrawingBuffer: false,
+    powerPreference: 'low-power', failIfMajorPerformanceCaveat: !force,
+  };
+  let gl = canvas.getContext('webgl', attrs) || canvas.getContext('experimental-webgl', attrs);
+  if (!gl) return;
+  const hp = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+  if (!hp || hp.precision < 16) return;
+
+  const EXTRA = 0.38;           // the cloth is 38% taller than the room
+  const fig = document.querySelector('.figure');
+  const rim = document.querySelector('.rim');
+  const hero = document.querySelector('.hero');
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  let progPaint; let progFrame; let buf; let tex; let fbo;
+  let W = 0; let H = 0; let cssW = 0; let cssH = 0; let scale = 1;
+  let U = {};
+
+  function compile(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || 'shader');
+    return s;
+  }
+  function program(fs) {
+    const p = gl.createProgram();
+    gl.attachShader(p, compile(gl.VERTEX_SHADER, VERT));
+    gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
+    gl.bindAttribLocation(p, 0, 'aPos');
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) || 'link');
+    return p;
+  }
+  function uniforms(p, names) {
+    const o = {};
+    names.forEach((n) => { o[n] = gl.getUniformLocation(p, n); });
+    return o;
+  }
+
+  function init() {
+    progPaint = program(PAINT);
+    progFrame = program(FRAME);
+    U.paint = uniforms(progPaint, ['uRes', 'uUnit', 'uSeed']);
+    U.frame = uniforms(progFrame, ['uPaint', 'uRes', 'uTime', 'uLight', 'uRadius', 'uPower', 'uPar', 'uExtra', 'uEnd', 'uDust', 'uGrain']);
+    buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  }
+
+  let quality = 1;
+  function size() {
+    const r = host.getBoundingClientRect();
+    cssW = Math.max(1, r.width);
+    cssH = Math.max(1, r.height);
+    // keep the per-frame pixel count small: the cloth and light are soft
+    const budget = 340000 * quality;
+    scale = Math.min(1, Math.max(0.34, Math.sqrt(budget / (cssW * cssH))));
+    W = Math.max(2, Math.round(cssW * scale));
+    H = Math.max(2, Math.round(cssH * scale));
+    canvas.width = W;
+    canvas.height = H;
+    paint();
+  }
+
+  function paint() {
+    const PW = W;
+    const PH = Math.round(H * (1 + EXTRA));
+    if (tex) gl.deleteTexture(tex);
+    if (fbo) gl.deleteFramebuffer(fbo);
+    tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, PW, PH, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    gl.viewport(0, 0, PW, PH);
+    gl.useProgram(progPaint);
+    gl.uniform2f(U.paint.uRes, PW, PH);
+    // blob size follows the room, so a phone and a desktop see the same cloth
+    gl.uniform1f(U.paint.uUnit, Math.max(360, Math.min(980, Math.max(cssW, cssH) * 0.55)) * scale);
+    gl.uniform2f(U.paint.uSeed, 7.3, 2.1);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  }
+
+  // ── geometry the light follows ──────────────────────────────────────────
+  let head = { x: innerWidth / 2, y: innerHeight * 0.3, h: 400 };
+  let heroH = innerHeight;
+  let docH = doc.scrollHeight;
+  function measure() {
+    if (!fig) return;
+    const r = fig.getBoundingClientRect();
+    head = { x: r.left + r.width * 0.6, y: r.top + scrollY + r.height * 0.2, h: r.height };
+    heroH = hero ? hero.offsetHeight : innerHeight;
+    docH = doc.scrollHeight;
+  }
+
+  // ── springs (critically damped, frame-rate independent) ─────────────────
+  const spring = (s, target, dt, response) => {
+    const w = (2 * Math.PI) / response;
+    const d = s.x - target;
+    const e = Math.exp(-w * dt);
+    s.x = target + (d + (s.v + w * d) * dt) * e;
+    s.v = (s.v - w * (s.v + w * d) * dt) * e;
+  };
+  const lx = { x: head.x, v: 0 };
+  const ly = { x: head.y, v: 0 };
+  const lp = { x: 0.2, v: 0 };
+  const pointer = { x: 0, y: 0, on: false, until: 0 };
+
+  if (fine) {
+    addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.on = true; }, { passive: true });
+    doc.addEventListener('pointerleave', () => { pointer.on = false; });
+  } else {
+    addEventListener('pointerdown', (e) => {
+      pointer.x = e.clientX; pointer.y = e.clientY; pointer.on = true; pointer.until = performance.now() + 1400;
+    }, { passive: true });
+  }
+
+  let t = 0;
+  let last = performance.now();
+  let raf = 0;
+  let born = 0;
+  let lastRim = '';
+  let lastSy = -1;
+  let idleSince = performance.now();
+  let frames = 0;
+  let slow = 0;
+  let skip = false;
+
+  function draw(sy) {
+    const vw = innerWidth;
+    const vh = innerHeight;
+    const k = scale;
+    gl.viewport(0, 0, W, H);
+    gl.useProgram(progFrame);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.uniform1i(U.frame.uPaint, 0);
+    gl.uniform2f(U.frame.uRes, W, H);
+    gl.uniform1f(U.frame.uTime, t);
+    // canvas y is up; the light lives in CSS px with y down
+    gl.uniform2f(U.frame.uLight, lx.x * k, (cssH - ly.x) * k);
+    const e = Math.min(1, Math.max(0, sy / (heroH * 0.85)));
+    const radius = (0.5 * Math.min(vw, vh) + 0.2 * Math.max(vw, vh)) * (1 + 0.3 * e);
+    gl.uniform1f(U.frame.uRadius, radius * k);
+    gl.uniform1f(U.frame.uPower, lp.x);
+    gl.uniform1f(U.frame.uPar, reduce ? 0 : Math.min(EXTRA / (1 + EXTRA), (sy / vh) * 0.06));
+    gl.uniform1f(U.frame.uExtra, EXTRA);
+    const end = Math.min(1, Math.max(0, (sy + vh - (docH - vh * 0.9)) / (vh * 0.9)));
+    gl.uniform1f(U.frame.uEnd, end * end * 0.7);
+    gl.uniform1f(U.frame.uDust, reduce ? 0 : 1);
+    gl.uniform1f(U.frame.uGrain, Math.max(1, 1.6 * k));
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  function step(now) {
+    raf = requestAnimationFrame(step);
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+    last = now;
+    if (doc.classList.contains('sheet-open')) return;
+
+    const sy = scrollY;
+    if (sy !== lastSy) { idleSince = now; lastSy = sy; }
+    if (pointer.on && fine) idleSince = Math.max(idleSince, now - 2000);
+    const idle = now - idleSince > 3500;
+    skip = idle ? !skip : false;
+    if (skip) return;           // idle: 30fps is indistinguishable for slow drift
+
+    t += idle ? dt * 2 : dt;
+    const vw = innerWidth;
+    const vh = innerHeight;
+    const e0 = Math.min(1, Math.max(0, sy / (heroH * 0.85)));
+    const e = e0 * e0 * (3 - 2 * e0);
+
+    let tx = head.x + (vw * 0.5 - head.x) * e;
+    let ty = (head.y - sy - head.h * 0.04) * (1 - e) + vh * 0.36 * e;
+    const touching = pointer.on && (fine || now < pointer.until);
+    if (touching) {
+      const pull = fine ? 0.24 * (1 - 0.5 * e) : 0.12;
+      tx += (pointer.x - tx) * pull;
+      ty += (pointer.y - ty) * pull;
+    } else if (!fine) {
+      pointer.on = false;
+    }
+    tx += Math.sin(t * 0.23) * vw * 0.012;
+    ty += Math.cos(t * 0.19) * vh * 0.01;
+
+    const warm = Math.min(1, (now - born) / 1800);
+    const ease = 1 - Math.pow(1 - warm, 3);
+    const power = (1 - 0.4 * e) * (0.35 + 0.65 * ease) * (1 + 0.03 * Math.sin(t * 0.45));
+    spring(lx, tx, dt, 0.9);
+    spring(ly, ty, dt, 0.9);
+    spring(lp, power, dt, 0.5);
+
+    // rim light on the portrait leans toward the key light
+    if (rim && sy < heroH) {
+      const hy = head.y - sy;
+      const dx = lx.x - head.x;
+      const dy = ly.x - hy;
+      const len = Math.hypot(dx, dy) || 1;
+      const reach = Math.min(1, len / (head.h * 0.5));
+      const m = head.h * 0.0065 * reach;
+      const css = `translate3d(${((dx / len) * m).toFixed(1)}px,${((dy / len) * m - head.h * 0.003).toFixed(1)}px,0) scale(1.012)`;
+      if (css !== lastRim) { rim.style.transform = css; lastRim = css; }
+    }
+
+    draw(sy);
+
+    // adaptive quality: if the device cannot hold ~40fps, halve the pixels
+    frames += 1;
+    if (frames > 30 && frames < 150) {
+      if (dt > 0.026) slow += 1;
+      if (frames === 149 && slow > 70) {
+        if (quality > 0.5) { quality = 0.5; size(); frames = 0; slow = 0; } else { stop(); still(); }
+      }
+    }
+  }
+
+  function still() {
+    cancelAnimationFrame(raf);
+    raf = 0;
+    lp.x = 1;
+    lx.x = head.x;
+    ly.x = head.y - scrollY - head.h * 0.04;
+    draw(scrollY);
+  }
+  function stop() {
+    cancelAnimationFrame(raf);
+    raf = 0;
+  }
+
+  try {
+    init();
+    host.appendChild(canvas);
+    measure();
+    size();
+  } catch (_) {
+    canvas.remove();
+    return;
+  }
+
+  born = performance.now();
+  lx.x = head.x;
+  ly.x = head.y - scrollY - head.h * 0.04;
+  if (reduce) {
+    still();
+  } else {
+    raf = requestAnimationFrame(step);
+  }
+  // reveal the canvas only once a real frame exists
+  requestAnimationFrame(() => doc.classList.add('gl'));
+
+  let lastW = cssW;
+  let lastH = cssH;
+  const ro = new ResizeObserver(() => {
+    const r = host.getBoundingClientRect();
+    measure();
+    if (Math.abs(r.width - lastW) > 1 || Math.abs(r.height - lastH) > lastH * 0.12) {
+      lastW = r.width;
+      lastH = r.height;
+      size();
+      if (reduce) still();
+    }
+  });
+  ro.observe(host);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  setTimeout(measure, 1400);   // after the entrance settles
+  addEventListener('resize', measure, { passive: true });
+
+  canvas.addEventListener('webglcontextlost', (ev) => {
+    ev.preventDefault();
+    stop();
+    doc.classList.remove('gl');
+  });
+  canvas.addEventListener('webglcontextrestored', () => {
+    try {
+      init();
+      size();
+      doc.classList.add('gl');
+      if (reduce) still(); else raf = requestAnimationFrame(step);
+    } catch (_) { canvas.remove(); }
+  });
+}

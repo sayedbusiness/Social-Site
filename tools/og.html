@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>OG render</title>
+<style>
+@font-face{font-family:"Archivo Display";src:url("/assets/fonts/archivo-vf.woff2") format("woff2");font-weight:400 800;font-stretch:100% 125%;font-display:block}
+@font-face{font-family:"Archivo";src:url("/assets/fonts/archivo-vf.woff2") format("woff2");font-weight:400 800;font-stretch:100% 125%;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url("/assets/fonts/instrument-serif-italic.woff2") format("woff2");font-style:italic;font-display:block}
+html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:#0A0908}
+.backdrop{position:fixed;inset:0;width:1200px;height:630px;background:radial-gradient(50% 60% at 74% 34%,rgba(150,100,52,.5),rgba(40,27,15,0) 75%),#100D0A}
+.backdrop canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero{position:relative;width:1200px;height:630px}
+.figure{position:absolute;right:70px;bottom:-40px;height:640px;aspect-ratio:848/990}
+.figure img{width:100%;height:100%;-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);mask-image:linear-gradient(180deg,#000 70%,transparent 100%);filter:drop-shadow(0 22px 34px rgba(4,3,2,.55))}
+.rim{position:absolute;inset:0;opacity:.7;background:linear-gradient(180deg,#E8B676 4%,rgba(211,158,90,.75) 26%,rgba(211,158,90,0) 52%);-webkit-mask:url("/assets/img/sayed-mask.png") center/100% 100% no-repeat;mask:url("/assets/img/sayed-mask.png") center/100% 100% no-repeat;filter:blur(1.2px);transform:translate3d(-2px,-3px,0) scale(1.004)}
+.k{position:absolute;left:72px;top:64px;width:30px;height:38px;background:#F3F1EF;-webkit-mask:url("/assets/brand/kova-k-white.png") center/contain no-repeat;mask:url("/assets/brand/kova-k-white.png") center/contain no-repeat}
+.txt{position:absolute;left:72px;bottom:86px}
+h1{margin:0;font-family:"Archivo Display";font-weight:800;font-stretch:125%;text-transform:uppercase;color:#F3F1EF;font-size:112px;line-height:.88;letter-spacing:-.02em;text-shadow:0 4px 40px rgba(8,6,4,.5)}
+h1 span{display:block}
+.role{margin:26px 0 0;font-family:"Archivo";font-weight:600;font-size:30px;color:#D39E5A}
+.pitch{margin:10px 0 0;font-family:"Instrument Serif";font-style:italic;font-size:32px;line-height:1.2;color:#F3F1EF;max-width:500px;text-wrap:balance}
+</style>
+</head>
+<body>
+<div class="backdrop"></div>
+<div class="hero">
+  <div class="figure"><div class="rim"></div><img src="/assets/img/sayed-848.webp" alt=""></div>
+  <i class="k"></i>
+  <div class="txt">
+    <h1><span>Sayed</span><span>Sultani</span></h1>
+    <p class="role">Founder, Kova Media</p>
+    <p class="pitch">I buy attention and turn it into revenue you can actually trace.</p>
+  </div>
+</div>
+<script type="module">
+  const m = await import('/assets/backdrop.js');
+  m.start({ reduce: true });
+  await document.fonts.ready;
+  document.documentElement.dataset.ready = '1';
+</script>
+</body>
+</html>

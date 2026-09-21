@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+/* Kova Media · link.kovamedia.agency
+   One file of CSS, inlined so the first paint is already styled.
+   Tokens are Kova's Atelier palette (kovamedia.agency). */
+
+@font-face{font-family:"Archivo";src:url("/assets/fonts/archivo-vf.woff2") format("woff2");font-weight:400 800;font-stretch:100% 125%;font-style:normal;font-display:swap}
+@font-face{font-family:"Archivo Display";src:url("/assets/fonts/archivo-vf.woff2") format("woff2");font-weight:400 800;font-stretch:100% 125%;font-style:normal;font-display:block}
+@font-face{font-family:"Instrument Serif";src:url("/assets/fonts/instrument-serif-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url("/assets/fonts/instrument-serif.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  /* measured on --night: bone 17.6:1 · bone-2 10.4:1 · dim 7.4:1 · copper 8.4:1
+     measured on the brightest lit panel pixel (L .025): dim 5.3:1 */
+  --night:#0A0908; --night-2:#12100D; --night-3:#1B1814; --night-4:#24201A;
+  --seam:#2C2720; --seam-2:#3A332A;
+  --bone:#F3F1EF; --bone-2:#C4BBAE; --dim:#A89E91;   /* dim is lighter than the site's #958B7C: this room is lit */
+  --copper:#D39E5A; --copper-hot:#E8B676; --copper-deep:#7C501D;
+  --paper:#EFE8DC; --paper-2:#E3D9C9; --paper-ink:#3B2812; --paper-mut:#5E4B35;
+  --on-copper:#1A1006;
+
+  --sans:"Archivo",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --display:"Archivo Display","Archivo",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Instrument Serif","Iowan Old Style",Charter,Georgia,serif;
+
+  --out:cubic-bezier(.23,1,.32,1);
+  --expo:cubic-bezier(.16,1,.3,1);
+  --inout:cubic-bezier(.77,0,.175,1);
+  --drawer:cubic-bezier(.32,.72,0,1);
+  /* damped springs rendered as linear() easing; durations match their settle time */
+  --spring-snap:cubic-bezier(.2,.9,.3,1.04);
+  --spring-soft:cubic-bezier(.22,1,.36,1);
+
+  --gutter:clamp(16px,5vw,40px);
+  --col:min(100% - 2*var(--gutter),600px);
+  --bar-h:60px;
+  --r-surface:20px; --r-control:14px;
+  --ring:rgba(243,241,239,.1);
+  --ring-2:rgba(243,241,239,.16);
+  color-scheme:dark;
+}
+@supports (transition-timing-function:linear(0,1)){
+  :root{
+    --spring-snap:linear(0, 0.0198, 0.0704, 0.1409, 0.223, 0.3101, 0.3976, 0.482, 0.5611, 0.6336, 0.6985, 0.7558, 0.8054, 0.8478, 0.8836, 0.9132, 0.9374, 0.9569, 0.9723, 0.9843, 0.9933, 1, 1.0047, 1.0078, 1.0098, 1.0108, 1.0111, 1.0109, 1.0104, 1.0096, 1.0087, 1.0077, 1.0067, 1.0058, 1.0049, 1.0041, 1.0034, 1.0027, 1.0022, 1.0017, 1);
+    --spring-soft:linear(0, 0.0164, 0.0586, 0.1176, 0.1868, 0.261, 0.3365, 0.4106, 0.4813, 0.5474, 0.6083, 0.6636, 0.7131, 0.7571, 0.7958, 0.8295, 0.8587, 0.8837, 0.9051, 0.9231, 0.9383, 0.9509, 0.9614, 0.97, 0.977, 0.9827, 0.9873, 0.9909, 0.9938, 0.996, 0.9977, 0.9989, 0.9999, 1.0005, 1.001, 1.0013, 1.0014, 1.0015, 1.0015, 1.0015, 1);
+  }
+}
+
+/* ── base ─────────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--night);-webkit-text-size-adjust:100%;text-size-adjust:100%;font-synthesis:none;scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;min-height:100vh;background:var(--night);color:var(--bone-2);font-family:var(--sans);font-size:1.0625rem;line-height:1.62;font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip;-webkit-tap-highlight-color:transparent}
+img,svg,canvas{display:block}
+img{max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;-webkit-appearance:none;appearance:none}
+h1,h2,h3,p,figure,blockquote,ol,ul{margin:0;padding:0}
+ol,ul{list-style:none}
+::selection{background:var(--copper);color:var(--on-copper)}
+:focus-visible{outline:2px solid var(--copper-hot);outline-offset:3px;border-radius:6px}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.ico{width:22px;height:22px;flex:none;fill:currentColor}
+.skip{position:fixed;left:12px;top:-60px;z-index:50;padding:10px 16px;border-radius:10px;background:var(--copper);color:var(--on-copper);font-weight:600;transition:top .2s var(--out)}
+.skip:focus{top:12px}
+
+/* ── the studio backdrop ──────────────────────────────────────────────────
+   CSS paints the room first (and stays if WebGL is unavailable); the canvas
+   takes over with the living, hand-painted cloth once its first frame exists. */
+.backdrop{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:0;pointer-events:none;overflow:hidden;background:
+  radial-gradient(58% 40% at 50% 27%,rgba(150,100,52,.50),rgba(96,62,30,.26) 46%,rgba(40,27,15,0) 76%),
+  radial-gradient(44% 32% at 16% 72%,rgba(102,100,100,.10),rgba(102,100,100,0) 70%),
+  radial-gradient(52% 38% at 86% 58%,rgba(59,40,18,.34),rgba(59,40,18,0) 70%),
+  linear-gradient(180deg,#17120D 0%,#100D0A 55%,#0A0908 100%)}
+.backdrop::after{content:"";position:absolute;inset:0;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .88 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.backdrop canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.4s var(--out)}
+.gl .backdrop canvas{opacity:1}
+.gl .backdrop::after{opacity:0}
+
+/* ── top bar ──────────────────────────────────────────────────────────── */
+.bar{position:fixed;inset:0 0 auto 0;z-index:20;height:calc(var(--bar-h) + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) max(var(--gutter),env(safe-area-inset-right,0px)) 0 max(var(--gutter),env(safe-area-inset-left,0px));display:flex;align-items:center;justify-content:space-between}
+.bar{pointer-events:none}
+.bar > *{pointer-events:auto}
+.bar::before{content:"";position:absolute;inset:0 0 auto 0;height:calc(var(--bar-h) + env(safe-area-inset-top,0px) + 14px);pointer-events:none;opacity:0;transition:opacity .4s var(--out);background:linear-gradient(180deg,rgba(10,9,8,.94) 0%,rgba(10,9,8,.78) 38%,rgba(10,9,8,.34) 72%,rgba(10,9,8,0) 100%)}
+.scrolled .bar::before{opacity:1}
+.mark{position:relative;display:grid;place-items:center;width:44px;height:44px;margin-left:-6px;border-radius:50%;color:var(--bone);transition:background-color .35s var(--out),box-shadow .35s var(--out)}
+.scrolled .mark{background:rgba(22,19,16,.42);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);box-shadow:inset 0 0 0 1px var(--ring),inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px -12px rgba(0,0,0,.7)}
+.mark i{display:block;width:19px;height:24px;background:currentColor;-webkit-mask:url("/assets/brand/kova-k-white.png") center/contain no-repeat;mask:url("/assets/brand/kova-k-white.png") center/contain no-repeat;transition:transform .5s var(--spring-soft)}
+.share-btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 17px 0 14px;border-radius:999px;color:var(--bone);font-size:.9375rem;font-weight:600;letter-spacing:.005em;background:rgba(22,19,16,.42);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);box-shadow:inset 0 0 0 1px var(--ring),inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px -12px rgba(0,0,0,.7);transition:background-color .2s var(--out),transform .16s var(--out)}
+.share-btn .ico{width:18px;height:18px}
+.share-btn::after{content:"";position:absolute;inset:-4px}
+.share-btn{position:relative}
+.share-btn:active{transform:scale(.96)}
+
+/* ── page shell ───────────────────────────────────────────────────────── */
+.page{position:relative;z-index:1}
+.col{width:var(--col);margin-inline:auto}
+
+/* ── hero (phones first: stacked) ─────────────────────────────────────── */
+.hero{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;
+  min-height:100svh;padding:calc(var(--bar-h) + env(safe-area-inset-top,0px) + clamp(0px,1.5svh,16px)) var(--gutter) clamp(28px,5svh,56px);
+  --ph:clamp(176px,43svh,500px)}
+.figure{position:relative;height:var(--ph);aspect-ratio:848/990;flex:none;margin-top:auto;translate:-10% 0}
+.portrait{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;
+  -webkit-mask-image:linear-gradient(180deg,#000 66%,rgba(0,0,0,.55) 84%,transparent 99%);mask-image:linear-gradient(180deg,#000 66%,rgba(0,0,0,.55) 84%,transparent 99%);
+  filter:drop-shadow(0 22px 34px rgba(4,3,2,.55))}
+.rim{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.7;
+  background:linear-gradient(180deg,var(--copper-hot) 4%,rgba(211,158,90,.75) 26%,rgba(211,158,90,0) 52%);
+  -webkit-mask:url("/assets/img/sayed-mask.png") center/100% 100% no-repeat;mask:url("/assets/img/sayed-mask.png") center/100% 100% no-repeat;
+  filter:blur(1.2px);transform:translate3d(0,-2px,0) scale(1.004);will-change:transform}
+
+.name{position:relative;z-index:2;margin-top:calc(var(--nfs) * -.62);font-family:var(--display);font-weight:800;font-stretch:125%;text-transform:uppercase;color:var(--bone);
+  --nfs:clamp(2.55rem,min(15.4vw,8.4svh),7rem);font-size:var(--nfs);line-height:.86;letter-spacing:-.02em;
+  text-shadow:0 2px 28px rgba(8,6,4,.55)}
+.name__line{display:block;overflow:hidden;padding:.05em .06em;margin:-.05em -.06em}
+.name__in{display:block}
+.role{position:relative;z-index:2;margin-top:clamp(12px,1.9svh,18px);font-size:clamp(.9375rem,3.9vw,1.0625rem);font-weight:600;letter-spacing:.01em;color:var(--copper);line-height:1.3}
+.pitch{position:relative;z-index:2;margin-top:clamp(8px,1.3svh,12px);max-width:30ch;font-family:var(--serif);font-style:italic;font-size:clamp(1.25rem,5.3vw,1.5rem);line-height:1.22;color:var(--bone);text-wrap:balance;text-shadow:0 1px 18px rgba(8,6,4,.6)}
+.hero__actions{position:relative;z-index:2;width:min(100%,380px);margin-top:clamp(18px,3svh,28px);display:grid;gap:10px}
+
+/* ── buttons ──────────────────────────────────────────────────────────── */
+.btn{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 22px;border-radius:var(--r-control);font-size:1.0625rem;font-weight:600;letter-spacing:.005em;white-space:nowrap;overflow:hidden;isolation:isolate;
+  transition:transform .16s var(--out),background-color .25s var(--out),box-shadow .35s var(--out),color .2s var(--out)}
+.btn:active{transform:scale(.97)}
+.btn--primary{color:var(--on-copper);background:var(--copper);
+  box-shadow:0 1px 0 rgba(255,236,208,.5) inset,0 -1px 0 rgba(90,55,20,.35) inset,0 14px 26px -12px rgba(4,3,2,.85),0 2px 5px rgba(4,3,2,.5)}
+.btn--primary .ico{width:21px;height:21px}
+.btn--primary::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(105deg,transparent 34%,rgba(255,244,226,.55) 50%,transparent 66%);transform:translateX(-120%)}
+.btn__icons{position:relative;width:21px;height:21px;flex:none}
+.btn__icons .ico{position:absolute;inset:0;transition:opacity .22s var(--out),transform .35s var(--spring-soft),filter .22s var(--out)}
+.btn__icons .ico:last-child{opacity:0;transform:scale(.6);filter:blur(3px)}
+.is-done .btn__icons .ico:first-child{opacity:0;transform:scale(.6);filter:blur(3px)}
+.is-done .btn__icons .ico:last-child{opacity:1;transform:none;filter:none}
+
+/* ── sections ─────────────────────────────────────────────────────────── */
+.section{padding-top:clamp(96px,15vw,168px)}
+.section h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(2.125rem,6.2vw + .5rem,3.25rem);line-height:1.04;letter-spacing:-.012em;color:var(--bone);text-wrap:balance;margin-bottom:clamp(20px,3.4vw,32px)}
+.section p{max-width:60ch}
+.section p + p{margin-top:1em}
+
+/* links */
+.seg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;margin-bottom:12px;border-radius:var(--r-control);background:rgba(15,13,11,.82);box-shadow:inset 0 0 0 1px var(--ring)}
+.seg__thumb{position:absolute;left:4px;top:4px;bottom:4px;width:calc(50% - 4px);border-radius:10px;background:rgba(243,241,239,.11);box-shadow:inset 0 0 0 1px rgba(243,241,239,.1),inset 0 1px 0 rgba(255,255,255,.08),0 6px 16px -8px rgba(0,0,0,.6);transition:transform .43s var(--spring-snap)}
+.seg[data-on="1"] .seg__thumb{transform:translateX(100%)}
+.seg button{position:relative;z-index:1;min-height:44px;border-radius:10px;font-size:.9375rem;font-weight:600;color:#ADA396;transition:color .25s var(--out)}
+.seg button[aria-selected="true"]{color:var(--bone)}
+.panels{position:relative}
+.panel{position:relative;border-radius:var(--r-surface);padding:1px;background:var(--ring);isolation:isolate;overflow:hidden}
+.panel[hidden]{display:none}
+.panel__glow,.panel__spot{position:absolute;left:0;top:0;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .35s var(--out)}
+.panel__glow{z-index:0;background:radial-gradient(closest-side,rgba(232,182,118,.75),rgba(211,158,90,.18) 55%,rgba(211,158,90,0))}
+.panel__body{position:relative;z-index:1;border-radius:calc(var(--r-surface) - 1px);background:rgba(14,12,10,.95);overflow:hidden}
+.panel__spot{z-index:0;background:radial-gradient(closest-side,rgba(232,182,118,.08),rgba(232,182,118,0))}
+.panel__title{display:none}
+.row{position:relative;z-index:1;display:grid;grid-template-columns:22px minmax(0,1fr) auto 16px;align-items:center;column-gap:14px;min-height:62px;padding:12px 18px;color:var(--bone);transition:background-color .2s var(--out)}
+.row + .row::before{content:"";position:absolute;left:54px;right:18px;top:0;height:1px;background:rgba(243,241,239,.07)}
+.row .ico{width:22px;height:22px;color:var(--bone);transition:color .25s var(--out),transform .35s var(--spring-soft)}
+.row__name{font-weight:600;font-size:1rem;letter-spacing:.003em;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row__meta{font-size:.875rem;color:var(--dim);white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:right;transition:color .2s var(--out)}
+.row__go{width:16px;height:16px;color:var(--dim);transition:transform .35s var(--spring-soft),color .2s var(--out)}
+.row:active{background:rgba(243,241,239,.06)}
+
+/* about */
+.lede{font-size:clamp(1.1875rem,4.2vw,1.375rem);line-height:1.5;color:var(--bone)}
+.pull{margin:clamp(28px,5vw,44px) 0;padding-left:clamp(18px,4vw,28px);position:relative;font-family:var(--serif);font-style:italic;font-size:clamp(1.625rem,5.4vw,2.25rem);line-height:1.16;letter-spacing:-.008em;color:var(--copper-hot);text-wrap:balance}
+.pull::before{content:"";position:absolute;left:0;top:.18em;bottom:.14em;width:1px;background:linear-gradient(180deg,var(--copper),rgba(211,158,90,.15))}
+
+/* audience */
+.who__list{display:grid;gap:2px;margin-bottom:clamp(18px,3vw,24px)}
+.who__list li{font-family:var(--display);font-weight:800;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em;line-height:1.02;color:var(--bone);font-size:clamp(1.375rem,5.9vw,2.6rem);padding:.3em 0;border-top:1px solid rgba(243,241,239,.08);text-wrap:balance}
+.who__list li:last-child{border-bottom:1px solid rgba(243,241,239,.08)}
+.who__list span{color:var(--copper)}
+
+/* steps */
+.steps{display:grid;gap:clamp(26px,4vw,34px)}
+.step{display:grid;grid-template-columns:clamp(48px,11vw,64px) minmax(0,1fr);column-gap:clamp(12px,3vw,20px);align-items:start}
+.step__n{font-family:var(--display);font-weight:800;font-stretch:125%;font-size:clamp(2.4rem,9vw,3.1rem);line-height:.8;color:transparent;-webkit-text-stroke:1.2px rgba(211,158,90,.85);letter-spacing:-.02em}
+.step h3{font-size:1.125rem;font-weight:600;color:var(--bone);line-height:1.3;margin:.1em 0 .35em}
+.step p{font-size:1rem;color:var(--bone-2);line-height:1.6}
+
+/* contact */
+.contact{display:grid;gap:12px}
+.tile{position:relative;display:flex;align-items:center;gap:16px;min-height:76px;padding:16px 18px;border-radius:var(--r-surface);background:rgba(15,13,11,.8);box-shadow:inset 0 0 0 1px var(--ring);color:var(--bone);transition:box-shadow .3s var(--out),background-color .3s var(--out),transform .16s var(--out)}
+.tile:active{transform:scale(.985)}
+.tile__ico{display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:12px;background:rgba(211,158,90,.1);color:var(--copper);box-shadow:inset 0 0 0 1px rgba(211,158,90,.2)}
+.tile__ico .ico{width:21px;height:21px}
+.tile__txt{min-width:0;flex:1}
+.tile__txt b{display:block;font-weight:600;font-size:1.0625rem;line-height:1.3}
+.tile__txt small{display:block;font-size:.875rem;color:var(--dim);margin-top:2px;overflow-wrap:anywhere}
+.tile__go{width:18px;height:18px;color:var(--dim);flex:none;transition:transform .35s var(--spring-soft),color .2s var(--out)}
+.tile--apply{background:linear-gradient(180deg,rgba(211,158,90,.16),rgba(124,80,29,.1));box-shadow:inset 0 0 0 1px rgba(211,158,90,.38)}
+.tile--apply .tile__ico{background:var(--copper);color:var(--on-copper);box-shadow:none}
+.tile--apply .tile__txt b{font-size:1.1875rem}
+.tile--apply .tile__txt small{color:#D8D0C5}
+.tile__pair{grid-area:pair;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 14px;border-radius:12px;font-size:.9375rem;font-weight:600;color:var(--bone);background:rgba(243,241,239,.06);box-shadow:inset 0 0 0 1px var(--ring);transition:background-color .2s var(--out),transform .16s var(--out)}
+.chip .ico{width:18px;height:18px;color:var(--copper)}
+.chip:active{transform:scale(.96)}
+.tile--call{display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-areas:"ico txt" "pair pair";row-gap:14px;column-gap:16px;align-items:center}
+.tile--call .tile__ico{grid-area:ico}
+.tile--call .tile__txt{grid-area:txt}
+.tile--call .tile__txt b{white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* footer */
+.foot{padding:clamp(96px,14vw,150px) 0 calc(clamp(36px,6vw,56px) + env(safe-area-inset-bottom,0px));text-align:center}
+.foot__mark{display:block;width:112px;height:46px;margin:0 auto 18px;background:var(--bone);opacity:.92;-webkit-mask:url("/assets/brand/kova-wordmark-white@256.png") center/contain no-repeat;mask:url("/assets/brand/kova-wordmark-white@256.png") center/contain no-repeat}
+.foot p{font-size:.875rem;color:var(--bone-2)}
+.foot a{color:var(--bone);text-decoration:underline;text-decoration-color:rgba(243,241,239,.35);text-underline-offset:3px}
+
+/* ── share sheet ──────────────────────────────────────────────────────── */
+.sheet{position:fixed;inset:auto 0 0 0;width:100%;max-width:100%;max-height:100%;margin:0;padding:0;border:0;background:transparent;color:var(--bone-2);overflow:visible}
+.sheet::backdrop{background:rgba(6,5,4,.62);opacity:0;transition:opacity .38s var(--out)}
+.sheet.is-open::backdrop{opacity:1}
+.sheet__panel{position:relative;margin:0 auto;width:100%;max-width:480px;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));border-radius:26px 26px 0 0;
+  background:linear-gradient(180deg,#1C1813,#12100D 40%);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 0 0 1px rgba(243,241,239,.08),0 -30px 80px -20px rgba(0,0,0,.7);
+  transform:translate3d(0,105%,0);transition:transform .5s var(--drawer);touch-action:none}
+.sheet.is-open .sheet__panel{transform:none}
+.sheet__grip{display:block;width:40px;height:5px;margin:0 auto 12px;border-radius:3px;background:rgba(243,241,239,.22)}
+.sheet__head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sheet__head h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.75rem;line-height:1;color:var(--bone)}
+.sheet__close{display:grid;place-items:center;width:44px;height:44px;margin-right:-8px;border-radius:50%;color:var(--bone-2);transition:background-color .2s var(--out),transform .16s var(--out)}
+.sheet__close .ico{width:20px;height:20px}
+.sheet__close:active{transform:scale(.92)}
+.card-wrap{perspective:900px;margin:0 auto 18px;width:min(100%,300px)}
+.card{position:relative;border-radius:18px;padding:18px 18px 16px;color:var(--paper-ink);overflow:hidden;
+  background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .23 0 0 0 0 .16 0 0 0 0 .07 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23p)'/%3E%3C/svg%3E");
+  box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 22px 40px -18px rgba(0,0,0,.75),0 2px 6px rgba(0,0,0,.35);
+  transform-style:preserve-3d;transition:transform .6s var(--spring-soft)}
+.card__glint{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(60% 50% at var(--gx,30%) var(--gy,20%),rgba(255,255,255,.55),rgba(255,255,255,0) 70%);mix-blend-mode:soft-light;transition:opacity .35s var(--out)}
+.card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card__k{display:block;width:13px;height:17px;background:var(--paper-ink);-webkit-mask:url("/assets/brand/kova-k-white.png") center/contain no-repeat;mask:url("/assets/brand/kova-k-white.png") center/contain no-repeat}
+.card__top span{font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-mut)}
+.qr{width:100%;height:auto;color:var(--paper-ink)}
+.card__name{margin-top:12px;font-family:var(--display);font-weight:800;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em;font-size:1.25rem;line-height:1;color:var(--paper-ink)}
+.card__url{margin-top:6px;font-size:.8125rem;font-weight:600;color:var(--paper-mut)}
+.sheet__hint{text-align:center;font-size:.875rem;color:var(--dim);margin:-4px 0 18px}
+.sheet__actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn--ghost{min-height:52px;font-size:1rem;color:var(--bone);background:rgba(243,241,239,.07);box-shadow:inset 0 0 0 1px var(--ring)}
+.btn--ghost .ico{width:19px;height:19px}
+.btn--ghost.btn__morph{display:flex}
+.sheet__actions .btn--primary{min-height:52px;font-size:1rem}
+.sheet__actions:has([data-native-share][hidden]) .btn{grid-column:1/-1}
+html.sheet-open{overflow:hidden}
+.copy-label{display:grid}
+.copy-label > span{grid-area:1/1;transition:opacity .2s var(--out),filter .2s var(--out),transform .3s var(--spring-soft)}
+.copy-label > span:last-child{opacity:0;filter:blur(3px);transform:translateY(6px)}
+.is-copied .copy-label > span:first-child{opacity:0;filter:blur(3px);transform:translateY(-6px)}
+.is-copied .copy-label > span:last-child{opacity:1;filter:none;transform:none}
+
+/* desktop: a popover that grows out of the Share button */
+@media (min-width:700px){
+  .sheet{inset:calc(var(--bar-h) + env(safe-area-inset-top,0px) + 4px) max(var(--gutter),env(safe-area-inset-right,0px)) auto auto;width:min(380px,calc(100vw - 2 * var(--gutter)))}
+  .sheet__panel{max-width:none;border-radius:24px;padding:16px 20px 20px;max-height:calc(100svh - var(--bar-h) - 24px);overflow:auto;overscroll-behavior:contain;
+    transform-origin:calc(100% - 44px) -8px;transform:translate3d(0,-6px,0) scale(.94);opacity:0;
+    transition:transform .34s var(--spring-soft),opacity .18s var(--out);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 0 0 1px rgba(243,241,239,.09),0 30px 70px -20px rgba(0,0,0,.85),0 8px 20px -8px rgba(0,0,0,.6)}
+  .sheet.is-open .sheet__panel{transform:none;opacity:1}
+  .sheet__grip{display:none}
+  .card-wrap{width:min(100%,300px,calc(100svh - 400px))}
+}
+
+/* ── reveal on scroll (armed by JS only for content still below the fold) */
+.will-reveal{opacity:0;transform:translate3d(0,22px,0);filter:blur(6px)}
+.will-reveal.is-in{opacity:1;transform:none;filter:none;transition:opacity .8s var(--out),transform 1s var(--expo),filter .8s var(--out);transition-delay:calc(var(--i,0) * 70ms)}
+
+/* ── load choreography: runs once, CSS only, ends in the resting state ── */
+@media (prefers-reduced-motion:no-preference){
+  @keyframes k-portrait{from{opacity:0;transform:translate3d(0,28px,0) scale(.985);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+  @keyframes k-line{from{transform:translate3d(0,108%,0)}to{transform:none}}
+  @keyframes k-rise{from{opacity:0;transform:translate3d(0,14px,0)}to{opacity:1;transform:none}}
+  @keyframes k-fade{from{opacity:0}to{opacity:1}}
+  @keyframes k-room{from{opacity:.0}to{opacity:1}}
+  .backdrop{animation:k-room 1.2s var(--out) both}
+  .figure{animation:k-portrait 1.1s var(--expo) .08s both}
+  .name__in{animation:k-line .95s var(--expo) both}
+  .name__first .name__in{animation-delay:.22s}
+  .name__last .name__in{animation-delay:.3s}
+  .role{animation:k-rise .8s var(--expo) .46s both}
+  .pitch{animation:k-rise .8s var(--expo) .54s both}
+  .hero__actions{animation:k-rise .8s var(--expo) .62s both}
+  .bar > *{animation:k-fade .8s var(--out) .7s both}
+}
+
+/* ── hover (fine pointers only) ───────────────────────────────────────── */
+@media (hover:hover) and (pointer:fine){
+  .share-btn:hover{background:rgba(52,45,37,.55)}
+  .mark:hover i{transform:scale(1.08)}
+  .btn--primary:hover{background:var(--copper-hot);box-shadow:0 1px 0 rgba(255,240,216,.6) inset,0 -1px 0 rgba(90,55,20,.3) inset,0 18px 30px -12px rgba(4,3,2,.9),0 3px 7px rgba(4,3,2,.5)}
+  .btn--primary:hover::after{transform:translateX(120%);transition:transform .9s var(--out)}
+  .btn--ghost:hover{background:rgba(243,241,239,.12)}
+  .row:hover{background:rgba(243,241,239,.045)}
+  .row:hover .ico{color:var(--copper-hot)}
+  .row:hover .row__go{transform:translate3d(2px,-2px,0);color:var(--bone)}
+  .row:hover .row__meta{color:var(--bone-2)}
+  .panel:hover .panel__glow,.panel:hover .panel__spot{opacity:1}
+  .tile:hover{box-shadow:inset 0 0 0 1px var(--ring-2);background:rgba(20,17,14,.86)}
+  .tile--apply:hover{box-shadow:inset 0 0 0 1px rgba(232,182,118,.6);background:linear-gradient(180deg,rgba(211,158,90,.22),rgba(124,80,29,.14))}
+  .tile:hover .tile__go{transform:translate3d(3px,0,0);color:var(--bone)}
+  .chip:hover{background:rgba(243,241,239,.11)}
+  .sheet__close:hover{background:rgba(243,241,239,.08)}
+  .card-wrap:hover .card__glint{opacity:1}
+}
+
+/* ── wider phones & tablets ───────────────────────────────────────────── */
+@media (min-width:600px){
+  :root{--bar-h:68px}
+}
+@media (min-width:900px){
+  :root{--col:min(100% - 2*var(--gutter),880px)}
+  .seg{display:none}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;height:auto!important}
+  .panel[hidden]{display:block}
+  .panel__title{display:flex;align-items:center;gap:10px;padding:18px 18px 6px;font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+  .contact{grid-template-columns:1fr 1fr}
+  .tile--apply{grid-column:1/-1}
+  .steps{max-width:720px}
+  .pull{max-width:24ch}
+}
+
+/* ── desktop: the cover sitting ───────────────────────────────────────────
+   The name frames the face: SAYED left of the head, SULTANI right of it, the
+   caps on the mouth-to-chin band where the silhouette is narrowest.
+   Measured, not guessed:
+     SAYED 4.26em, SULTANI 5.27em (Archivo wdth 125 / wght 800 / -0.02em)
+     caps centre sits .491em below the line box top (asc 878, desc 210, cap 686)
+     silhouette at 30-41% of the portrait height spans x .463-.742 → centre .60, width .29 */
+@media (min-width:1180px) and (min-aspect-ratio:5/4) and (min-height:620px){
+  :root{--bar-h:76px}
+  .hero{display:block;min-height:max(100svh,640px);padding:0;
+    --m:clamp(40px,4vw,80px);
+    --ph:min(82svh,860px,calc(100svh - 110px));
+    --pw:calc(var(--ph) * .8566);
+    --a:4.26; --b:5.27; --band:.29; --hc:.6;
+    --nf:min(190px,calc((100vw - 2 * var(--m) - var(--band) * var(--pw)) / (var(--a) + var(--b) + .7)));
+    --gw:calc(var(--band) * var(--pw) + .7 * var(--nf));
+    --gx:calc((100vw - (var(--a) + var(--b)) * var(--nf) - var(--gw)) / 2);
+    --hx:calc(var(--gx) + var(--a) * var(--nf) + var(--gw) / 2)}
+  .figure{position:absolute;margin:0;bottom:0;left:calc(var(--hx) - var(--hc) * var(--pw));height:var(--ph);translate:none}
+  .portrait{-webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.6) 88%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.6) 88%,transparent 100%)}
+  .name{position:absolute;z-index:0;left:0;right:0;margin:0;top:calc(max(100svh,640px) - var(--ph) + .355 * var(--ph) - .491 * var(--nf));
+    --nfs:var(--nf);font-size:var(--nf);line-height:1;white-space:nowrap;text-shadow:0 4px 40px rgba(8,6,4,.45)}
+  .name__line{position:absolute;top:0}
+  .name__first{left:var(--gx)}
+  .name__last{left:calc(var(--gx) + var(--a) * var(--nf) + var(--gw))}
+  .hero__info{position:absolute;right:var(--gx);bottom:clamp(40px,7svh,72px);width:min(380px,calc(100vw - var(--gx) - var(--hx) - .33 * var(--pw) - 24px));text-align:left;display:flex;flex-direction:column;align-items:flex-start}
+  .role,.pitch{text-align:left}
+  .pitch{max-width:19ch;font-size:clamp(1.5rem,1.9vw,1.875rem)}
+  .hero__actions{width:100%;max-width:340px}
+}
+@media (min-width:1180px) and (min-aspect-ratio:5/4) and (min-height:620px) and (max-height:760px){
+  .pitch{font-size:1.5rem}
+}
+
+/* ── accessibility preferences ────────────────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+  .will-reveal{opacity:1;transform:none;filter:none}
+}
+@media (prefers-reduced-transparency:reduce){
+  .share-btn,.scrolled .mark{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--night-3)}
+  .panel__body,.tile{background:var(--night-2)}
+}
+@media (prefers-contrast:more){
+  :root{--ring:rgba(243,241,239,.4);--dim:#B9AE9F}
+  .row__meta{color:var(--bone-2)}
+}
+@media (forced-colors:active){
+  .mark i,.foot__mark,.card__k{background:CanvasText}
+  .btn,.tile,.panel,.seg{border:1px solid CanvasText}
+}
+</style>
+<title>Sayed Sultani · Kova Media</title>
+<meta name="description" content="Sayed Sultani, founder of Kova Media. Paid media, creative and the tracking that connects them, for e-commerce, DTC, streetwear, roofing and home-service brands. Save my contact in one tap.">
+<link rel="canonical" href="https://link.kovamedia.agency/">
+<meta name="theme-color" content="#0A0908">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Kova Media">
+<meta property="og:title" content="Sayed Sultani · Kova Media">
+<meta property="og:description" content="Founder of Kova Media. Save my contact, find me everywhere, or apply to work with Kova.">
+<meta property="og:url" content="https://link.kovamedia.agency/">
+<meta property="og:image" content="https://link.kovamedia.agency/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sayed Sultani, founder of Kova Media, lit by a copper studio light.">
+<meta property="profile:first_name" content="Sayed">
+<meta property="profile:last_name" content="Sultani">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sayed Sultani · Kova Media">
+<meta name="twitter:description" content="Founder of Kova Media. Save my contact, find me everywhere, or apply to work with Kova.">
+<meta name="twitter:image" content="https://link.kovamedia.agency/og.jpg">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/archivo-vf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfilePage","url":"https://link.kovamedia.agency/","mainEntity":{"@type":"Person","name":"Sayed Sultani","jobTitle":"Founder","image":"https://link.kovamedia.agency/assets/img/sayed-848.webp","url":"https://link.kovamedia.agency/","worksFor":{"@type":"Organization","name":"Kova Media","url":"https://www.kovamedia.agency","email":"contact@kovamedia.agency","sameAs":["https://www.instagram.com/kovamedia.agency/","https://www.tiktok.com/@kovamedia.agency","https://www.linkedin.com/company/kova-media/","https://www.youtube.com/@kovamedia.agency","https://x.com/Kovamediaagency","https://www.facebook.com/Kovamedia.agency"]},"sameAs":["https://www.instagram.com/sayedsalez","https://www.tiktok.com/@sayedsvj","https://www.linkedin.com/in/sayed-sultani","https://www.youtube.com/@Sayedsvj"]}}
+</script>
+<script src="/assets/app.js" defer></script>
+</head>
+<body>
+<!--
+THESIS: A portrait sitting in Kova's after-hours studio. Sayed stands in front of a hand-painted canvas backdrop, mottled in his logo's grey and bronze, lit by one copper key light that drifts toward your hand. Refuses the link-page default: avatar circle, stacked pills, gradient wallpaper.
+OWN-WORLD: Night #0A0908 room; painted cloth #666464/#3B2812; copper key light #D39E5A to #E8B676 with dust in the beam; bone type #F3F1EF. Archivo Expanded 800 caps for the name, Archivo 400/600 for use, Instrument Serif italic for the voice. Paper #EFE8DC business card with bronze ink. Surfaces 20px, controls 14px, hairline rings, film grain. No blue.
+STORY: In five seconds a stranger knows who he is, saves him in one tap, and follows him where they live. Scrolling says what Kova does and for whom, and ends at Apply, Call or Email.
+FIRST VIEWPORT: Phone: bar (K, Share); portrait in the light; SAYED / SULTANI over the fading torso; copper role; one serif line; full-width Save contact. Desktop: the name frames the face at eye level, info and Save contact bottom right.
+FORM: Portrait sitting (brief-pinned: Sayed's reference link page, upgraded). No roll: the direction was pinned by the user.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+<!-- sprite:start --><svg class="sprite" aria-hidden="true" focusable="false"><defs><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></symbol><symbol id="i-tiktok-logo" viewBox="0 0 256 256"><path d="M224,72a48.05,48.05,0,0,1-48-48,8,8,0,0,0-8-8H128a8,8,0,0,0-8,8V156a20,20,0,1,1-28.57-18.08A8,8,0,0,0,96,130.69V88a8,8,0,0,0-9.4-7.88C50.91,86.48,24,119.1,24,156a76,76,0,0,0,152,0V116.29A103.25,103.25,0,0,0,224,128a8,8,0,0,0,8-8V80A8,8,0,0,0,224,72Zm-8,39.64a87.19,87.19,0,0,1-43.33-16.15A8,8,0,0,0,160,102v54a60,60,0,0,1-120,0c0-25.9,16.64-49.13,40-57.6v27.67A36,36,0,1,0,136,156V32h24.5A64.14,64.14,0,0,0,216,87.5Z"/></symbol><symbol id="i-linkedin-logo" viewBox="0 0 256 256"><path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"/></symbol><symbol id="i-youtube-logo" viewBox="0 0 256 256"><path d="M164.44,121.34l-48-32A8,8,0,0,0,104,96v64a8,8,0,0,0,12.44,6.66l48-32a8,8,0,0,0,0-13.32ZM120,145.05V111l25.58,17ZM234.33,69.52a24,24,0,0,0-14.49-16.4C185.56,39.88,131,40,128,40s-57.56-.12-91.84,13.12a24,24,0,0,0-14.49,16.4C19.08,79.5,16,97.74,16,128s3.08,48.5,5.67,58.48a24,24,0,0,0,14.49,16.41C69,215.56,120.4,216,127.34,216h1.32c6.94,0,58.37-.44,91.18-13.11a24,24,0,0,0,14.49-16.41c2.59-10,5.67-28.22,5.67-58.48S236.92,79.5,234.33,69.52Zm-15.49,113a8,8,0,0,1-4.77,5.49c-31.65,12.22-85.48,12-86,12H128c-.54,0-54.33.2-86-12a8,8,0,0,1-4.77-5.49C34.8,173.39,32,156.57,32,128s2.8-45.39,5.16-54.47A8,8,0,0,1,41.93,68c30.52-11.79,81.66-12,85.85-12h.27c.54,0,54.38-.18,86,12a8,8,0,0,1,4.77,5.49C221.2,82.61,224,99.43,224,128S221.2,173.39,218.84,182.47Z"/></symbol><symbol id="i-x-logo" viewBox="0 0 256 256"><path d="M214.75,211.71l-62.6-98.38,61.77-67.95a8,8,0,0,0-11.84-10.76L143.24,99.34,102.75,35.71A8,8,0,0,0,96,32H48a8,8,0,0,0-6.75,12.3l62.6,98.37-61.77,68a8,8,0,1,0,11.84,10.76l58.84-64.72,40.49,63.63A8,8,0,0,0,160,224h48a8,8,0,0,0,6.75-12.29ZM164.39,208,62.57,48h29L193.43,208Z"/></symbol><symbol id="i-facebook-logo" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,191.63V152h24a8,8,0,0,0,0-16H136V112a16,16,0,0,1,16-16h16a8,8,0,0,0,0-16H152a32,32,0,0,0-32,32v24H96a8,8,0,0,0,0,16h24v63.63a88,88,0,1,1,16,0Z"/></symbol><symbol id="i-globe-simple" viewBox="0 0 256 256"><path d="M128,24h0A104,104,0,1,0,232,128,104.12,104.12,0,0,0,128,24Zm87.62,96H175.79C174,83.49,159.94,57.67,148.41,42.4A88.19,88.19,0,0,1,215.63,120ZM96.23,136h63.54c-2.31,41.61-22.23,67.11-31.77,77C118.45,203.1,98.54,177.6,96.23,136Zm0-16C98.54,78.39,118.46,52.89,128,43c9.55,9.93,29.46,35.43,31.77,77Zm11.36-77.6C96.06,57.67,82,83.49,80.21,120H40.37A88.19,88.19,0,0,1,107.59,42.4ZM40.37,136H80.21c1.82,36.51,15.85,62.33,27.38,77.6A88.19,88.19,0,0,1,40.37,136Zm108,77.6c11.53-15.27,25.56-41.09,27.38-77.6h39.84A88.19,88.19,0,0,1,148.41,213.6Z"/></symbol><symbol id="i-phone" viewBox="0 0 256 256"><path d="M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z"/></symbol><symbol id="i-chat-circle-text" viewBox="0 0 256 256"><path d="M168,112a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,112Zm-8,24H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm72-8A104,104,0,0,1,79.12,219.82L45.07,231.17a16,16,0,0,1-20.24-20.24l11.35-34.05A104,104,0,1,1,232,128Zm-16,0A88,88,0,1,0,51.81,172.06a8,8,0,0,1,.66,6.54L40,216,77.4,203.53a7.85,7.85,0,0,1,2.53-.42,8,8,0,0,1,4,1.08A88,88,0,0,0,216,128Z"/></symbol><symbol id="i-envelope-simple" viewBox="0 0 256 256"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"/></symbol><symbol id="i-user-plus" viewBox="0 0 256 256"><path d="M256,136a8,8,0,0,1-8,8H232v16a8,8,0,0,1-16,0V144H200a8,8,0,0,1,0-16h16V112a8,8,0,0,1,16,0v16h16A8,8,0,0,1,256,136Zm-57.87,58.85a8,8,0,0,1-12.26,10.3C165.75,181.19,138.09,168,108,168s-57.75,13.19-77.87,37.15a8,8,0,0,1-12.25-10.3c14.94-17.78,33.52-30.41,54.17-37.17a68,68,0,1,1,71.9,0C164.6,164.44,183.18,177.07,198.13,194.85ZM108,152a52,52,0,1,0-52-52A52.06,52.06,0,0,0,108,152Z"/></symbol><symbol id="i-export" viewBox="0 0 256 256"><path d="M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z"/></symbol><symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></symbol><symbol id="i-x" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></symbol><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol></defs></svg><!-- sprite:end -->
+<a class="skip" href="#links">Skip to links</a>
+
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav class="bar" aria-label="Page">
+  <a class="mark" href="https://www.kovamedia.agency" aria-label="Kova Media website"><i></i></a>
+  <button class="share-btn" type="button" data-share-open aria-haspopup="dialog" aria-controls="share">
+    <svg class="ico" aria-hidden="true"><use href="#i-export"/></svg>Share
+  </button>
+</nav>
+
+<main class="page" id="top">
+  <header class="hero">
+    <div class="figure">
+      <div class="rim" aria-hidden="true"></div>
+      <picture>
+        <source type="image/avif" srcset="/assets/img/sayed-600.avif 600w, /assets/img/sayed-848.avif 848w" sizes="(min-width:1180px) 670px, 43vh">
+        <img class="portrait" src="/assets/img/sayed-848.webp" srcset="/assets/img/sayed-600.webp 600w, /assets/img/sayed-848.webp 848w" sizes="(min-width:1180px) 670px, 43vh" width="848" height="990" alt="Sayed Sultani in a black suit and striped tie" fetchpriority="high" decoding="async">
+      </picture>
+    </div>
+    <h1 class="name"><span class="name__line name__first"><span class="name__in">Sayed</span></span> <span class="name__line name__last"><span class="name__in">Sultani</span></span></h1>
+    <div class="hero__info">
+      <p class="role">Founder, Kova Media</p>
+      <p class="pitch">I buy attention and turn it into revenue you can actually trace.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="/sayed-sultani.vcf" data-save>
+          <span class="btn__icons" aria-hidden="true"><svg class="ico"><use href="#i-user-plus"/></svg><svg class="ico"><use href="#i-check"/></svg></span>
+          <span>Save contact</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section section--links col" id="links" aria-labelledby="h-links">
+    <h2 id="h-links" data-reveal>Everywhere else</h2>
+    <div class="seg" role="tablist" aria-label="Accounts" data-on="0" data-reveal>
+      <span class="seg__thumb" aria-hidden="true"></span>
+      <button type="button" role="tab" id="t-biz" aria-controls="p-biz" aria-selected="true">Kova Media</button>
+      <button type="button" role="tab" id="t-me" aria-controls="p-me" aria-selected="false" tabindex="-1">Personal</button>
+    </div>
+    <div class="panels" data-reveal>
+      <div class="panel" id="p-biz" role="tabpanel" aria-labelledby="t-biz">
+        <span class="panel__glow" aria-hidden="true"></span>
+        <div class="panel__body">
+          <span class="panel__spot" aria-hidden="true"></span>
+          <h3 class="panel__title">Kova Media</h3>
+          <a class="row" href="https://www.kovamedia.agency" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-globe-simple"/></svg><span class="row__name">Website</span><span class="row__meta">kovamedia.agency</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.instagram.com/kovamedia.agency/" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-instagram-logo"/></svg><span class="row__name">Instagram</span><span class="row__meta">@kovamedia.agency</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.tiktok.com/@kovamedia.agency" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-tiktok-logo"/></svg><span class="row__name">TikTok</span><span class="row__meta">@kovamedia.agency</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.linkedin.com/company/kova-media/" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-linkedin-logo"/></svg><span class="row__name">LinkedIn</span><span class="row__meta">Kova Media</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.youtube.com/@kovamedia.agency" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-youtube-logo"/></svg><span class="row__name">YouTube</span><span class="row__meta">@kovamedia.agency</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://x.com/Kovamediaagency" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-x-logo"/></svg><span class="row__name">X</span><span class="row__meta">@Kovamediaagency</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.facebook.com/Kovamedia.agency" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-facebook-logo"/></svg><span class="row__name">Facebook</span><span class="row__meta">Kova Media</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+        </div>
+      </div>
+      <div class="panel" id="p-me" role="tabpanel" aria-labelledby="t-me" hidden>
+        <span class="panel__glow" aria-hidden="true"></span>
+        <div class="panel__body">
+          <span class="panel__spot" aria-hidden="true"></span>
+          <h3 class="panel__title">Personal</h3>
+          <a class="row" href="https://www.instagram.com/sayedsalez" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-instagram-logo"/></svg><span class="row__name">Instagram</span><span class="row__meta">@sayedsalez</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.tiktok.com/@sayedsvj" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-tiktok-logo"/></svg><span class="row__name">TikTok</span><span class="row__meta">@sayedsvj</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.linkedin.com/in/sayed-sultani" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-linkedin-logo"/></svg><span class="row__name">LinkedIn</span><span class="row__meta">Sayed Sultani</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="row" href="https://www.youtube.com/@Sayedsvj" target="_blank" rel="noopener me"><svg class="ico" aria-hidden="true"><use href="#i-youtube-logo"/></svg><span class="row__name">YouTube</span><span class="row__meta">@sayedsvj</span><svg class="row__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about col" aria-labelledby="h-about">
+    <h2 id="h-about" data-reveal>The short version</h2>
+    <p class="lede" data-reveal>I run Kova Media: paid media, creative, and the tracking that connects the two, so an owner can look at one number and know what it bought.</p>
+    <p data-reveal>I came up through sales before I came up through marketing. Phones, objections, follow-up, close. I learned what makes somebody say yes long before I learned what makes an ad cheap, and most media buyers never learn it in that order.</p>
+    <p class="pull" data-reveal>The creative is the campaign. The reporting is the relationship.</p>
+    <p data-reveal>Get those two right and everything else is arithmetic. Outside the ad accounts I build my own tools, write my own scripts and shoot my own content. I'd rather understand a thing end to end than rent someone else's version of it.</p>
+  </section>
+
+  <section class="section who col" aria-labelledby="h-who">
+    <h2 id="h-who" data-reveal>Who it's for</h2>
+    <ul class="who__list" data-reveal>
+      <li>E-commerce <span>&amp;</span> DTC</li>
+      <li>Streetwear labels</li>
+      <li>Roofing <span>&amp;</span> home services</li>
+    </ul>
+    <p data-reveal>Operators spending real money on ads who are tired of guessing where it went.</p>
+  </section>
+
+  <section class="section how col" aria-labelledby="h-how">
+    <h2 id="h-how" data-reveal>How the work runs</h2>
+    <ol class="steps">
+      <li class="step" data-reveal><span class="step__n" aria-hidden="true">1</span><div><h3>You fund the media</h3><p>Your ad spend goes straight to the platforms, on your card, in accounts you own.</p></div></li>
+      <li class="step" data-reveal><span class="step__n" aria-hidden="true">2</span><div><h3>I build and run it</h3><p>Offer, creative, accounts, landing pages and tracking. You approve the direction. I handle the work and the weekly decisions.</p></div></li>
+      <li class="step" data-reveal><span class="step__n" aria-hidden="true">3</span><div><h3>You see what it bought</h3><p>Attribution wired end to end and reported in revenue, not impressions. Cut what loses, feed what wins, repeat.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="section section--contact col" aria-labelledby="h-contact">
+    <h2 id="h-contact" data-reveal>Start a conversation</h2>
+    <div class="contact">
+      <a class="tile tile--apply" href="https://www.kovamedia.agency/apply" target="_blank" rel="noopener" data-reveal>
+        <span class="tile__ico"><svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+        <span class="tile__txt"><b>Apply to work with us</b><small>kovamedia.agency/apply</small></span>
+        <svg class="tile__go ico" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>
+      </a>
+      <div class="tile tile--call" data-reveal>
+        <span class="tile__ico"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg></span>
+        <span class="tile__txt"><b>(916) 823-6820</b><small>Call or text</small></span>
+        <span class="tile__pair">
+          <a class="chip" href="tel:+19168236820"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg>Call</a>
+          <a class="chip" href="sms:+19168236820"><svg class="ico" aria-hidden="true"><use href="#i-chat-circle-text"/></svg>Text</a>
+        </span>
+      </div>
+      <a class="tile" href="mailto:contact@kovamedia.agency" data-reveal>
+        <span class="tile__ico"><svg class="ico" aria-hidden="true"><use href="#i-envelope-simple"/></svg></span>
+        <span class="tile__txt"><b>Email</b><small>contact@kovamedia.agency</small></span>
+        <svg class="tile__go ico" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <footer class="foot col">
+    <a class="foot__mark" href="https://www.kovamedia.agency" aria-label="Kova Media"></a>
+    <p>© <span data-year>2026</span> Kova Media · <a href="https://www.kovamedia.agency">kovamedia.agency</a></p>
+  </footer>
+</main>
+
+<dialog class="sheet" id="share" aria-labelledby="share-title">
+  <div class="sheet__panel" data-sheet-panel>
+    <span class="sheet__grip" aria-hidden="true"></span>
+    <div class="sheet__head">
+      <h2 id="share-title">Share</h2>
+      <button class="sheet__close" type="button" data-share-close aria-label="Close"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="card-wrap">
+      <figure class="card" data-card>
+        <span class="card__glint" aria-hidden="true"></span>
+        <div class="card__top"><i class="card__k" aria-hidden="true"></i><span>Kova Media</span></div>
+        <!-- qr:start --><svg class="qr" viewBox="-2 -2 33 33" role="img" aria-label="QR code for link.kovamedia.agency"><g fill="currentColor"><rect x="10.06" y="0.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="0.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="0.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="0.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="0.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="0.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="0.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="1.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="1.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="1.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="1.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="1.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="1.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="1.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="2.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="3.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="3.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="3.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="3.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="3.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="3.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="4.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="4.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="4.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="4.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="4.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="4.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="4.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="5.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="6.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="6.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="6.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="6.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="6.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="6.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="6.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="7.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="7.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="7.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="7.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="7.06" width=".88" height=".88" rx=".3"/><rect x="1.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="4.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="6.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="26.06" y="8.06" width=".88" height=".88" rx=".3"/><rect x="0.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="2.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="3.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="22.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="9.06" width=".88" height=".88" rx=".3"/><rect x="0.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="1.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="4.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="6.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="7.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="10.06" width=".88" height=".88" rx=".3"/><rect x="1.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="2.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="4.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="7.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="11.06" width=".88" height=".88" rx=".3"/><rect x="0.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="1.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="3.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="4.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="5.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="6.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="7.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="12.06" width=".88" height=".88" rx=".3"/><rect x="4.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="5.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="7.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="22.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="26.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="13.06" width=".88" height=".88" rx=".3"/><rect x="0.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="2.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="3.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="6.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="7.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="14.06" width=".88" height=".88" rx=".3"/><rect x="0.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="1.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="2.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="3.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="5.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="15.06" width=".88" height=".88" rx=".3"/><rect x="2.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="5.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="6.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="16.06" width=".88" height=".88" rx=".3"/><rect x="0.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="1.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="2.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="3.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="7.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="22.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="26.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="17.06" width=".88" height=".88" rx=".3"/><rect x="3.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="4.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="6.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="7.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="18.06" width=".88" height=".88" rx=".3"/><rect x="5.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="19.06" width=".88" height=".88" rx=".3"/><rect x="0.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="1.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="2.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="3.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="6.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="22.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="20.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="26.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="21.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="22.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="22.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="23.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="22.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="24.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="26.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="25.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="10.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="11.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="16.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="19.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="26.06" width=".88" height=".88" rx=".3"/><rect x="8.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="12.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="13.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="18.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="22.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="23.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="28.06" y="27.06" width=".88" height=".88" rx=".3"/><rect x="9.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="14.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="15.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="17.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="20.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="21.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="24.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="25.06" y="28.06" width=".88" height=".88" rx=".3"/><rect x="27.06" y="28.06" width=".88" height=".88" rx=".3"/><path fill-rule="evenodd" d="M1.6,0 h3.8 a1.6,1.6 0 0 1 1.6,1.6 v3.8 a1.6,1.6 0 0 1 -1.6,1.6 h-3.8 a1.6,1.6 0 0 1 -1.6,-1.6 v-3.8 a1.6,1.6 0 0 1 1.6,-1.6z M1.9,1 h3.2 a.9,.9 0 0 1 .9,.9 v3.2 a.9,.9 0 0 1 -.9,.9 h-3.2 a.9,.9 0 0 1 -.9,-.9 v-3.2 a.9,.9 0 0 1 .9,-.9z"/><rect x="2" y="2" width="3" height="3" rx=".9"/><path fill-rule="evenodd" d="M23.6,0 h3.8 a1.6,1.6 0 0 1 1.6,1.6 v3.8 a1.6,1.6 0 0 1 -1.6,1.6 h-3.8 a1.6,1.6 0 0 1 -1.6,-1.6 v-3.8 a1.6,1.6 0 0 1 1.6,-1.6z M23.9,1 h3.2 a.9,.9 0 0 1 .9,.9 v3.2 a.9,.9 0 0 1 -.9,.9 h-3.2 a.9,.9 0 0 1 -.9,-.9 v-3.2 a.9,.9 0 0 1 .9,-.9z"/><rect x="24" y="2" width="3" height="3" rx=".9"/><path fill-rule="evenodd" d="M1.6,22 h3.8 a1.6,1.6 0 0 1 1.6,1.6 v3.8 a1.6,1.6 0 0 1 -1.6,1.6 h-3.8 a1.6,1.6 0 0 1 -1.6,-1.6 v-3.8 a1.6,1.6 0 0 1 1.6,-1.6z M1.9,23 h3.2 a.9,.9 0 0 1 .9,.9 v3.2 a.9,.9 0 0 1 -.9,.9 h-3.2 a.9,.9 0 0 1 -.9,-.9 v-3.2 a.9,.9 0 0 1 .9,-.9z"/><rect x="2" y="24" width="3" height="3" rx=".9"/></g></svg><!-- qr:end -->
+        <figcaption>
+          <div class="card__name">Sayed Sultani</div>
+          <div class="card__url">link.kovamedia.agency</div>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="sheet__hint">Point a phone camera at the code.</p>
+    <div class="sheet__actions">
+      <button class="btn btn--ghost" type="button" data-copy>
+        <svg class="ico" aria-hidden="true"><use href="#i-copy"/></svg>
+        <span class="copy-label"><span>Copy link</span><span>Copied</span></span>
+      </button>
+      <button class="btn btn--primary" type="button" data-native-share hidden>
+        <svg class="ico" aria-hidden="true"><use href="#i-export"/></svg><span>Send</span>
+      </button>
+    </div>
+    <p class="sr" aria-live="polite" data-live></p>
+  </div>
+</dialog>
+</body>
+</html>
