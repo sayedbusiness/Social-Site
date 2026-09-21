@@ -11,16 +11,14 @@
 @font-face{font-family:"Archivo";src:url("/assets/fonts/archivo-vf.woff2") format("woff2");font-weight:400 800;font-stretch:100% 125%;font-style:normal;font-display:swap}
 @font-face{font-family:"Archivo Display";src:url("/assets/fonts/archivo-vf.woff2") format("woff2");font-weight:400 800;font-stretch:100% 125%;font-style:normal;font-display:block}
 @font-face{font-family:"Instrument Serif";src:url("/assets/fonts/instrument-serif-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
-@font-face{font-family:"Instrument Serif";src:url("/assets/fonts/instrument-serif.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 
 :root{
   /* measured on --night: bone 17.6:1 · bone-2 10.4:1 · dim 7.4:1 · copper 8.4:1
      measured on the brightest lit panel pixel (L .025): dim 5.3:1 */
-  --night:#0A0908; --night-2:#12100D; --night-3:#1B1814; --night-4:#24201A;
-  --seam:#2C2720; --seam-2:#3A332A;
+  --night:#0A0908; --night-2:#12100D; --night-3:#1B1814;
   --bone:#F3F1EF; --bone-2:#C4BBAE; --dim:#A89E91;   /* dim is lighter than the site's #958B7C: this room is lit */
-  --copper:#D39E5A; --copper-hot:#E8B676; --copper-deep:#7C501D;
-  --paper:#EFE8DC; --paper-2:#E3D9C9; --paper-ink:#3B2812; --paper-mut:#5E4B35;
+  --copper:#D39E5A; --copper-hot:#E8B676;
+  --paper:#EFE8DC; --paper-ink:#3B2812; --paper-mut:#5E4B35;
   --on-copper:#1A1006;
 
   --sans:"Archivo",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
@@ -29,7 +27,6 @@
 
   --out:cubic-bezier(.23,1,.32,1);
   --expo:cubic-bezier(.16,1,.3,1);
-  --inout:cubic-bezier(.77,0,.175,1);
   --drawer:cubic-bezier(.32,.72,0,1);
   /* damped springs rendered as linear() easing; durations match their settle time */
   --spring-snap:cubic-bezier(.2,.9,.3,1.04);
@@ -40,7 +37,6 @@
   --bar-h:60px;
   --r-surface:20px; --r-control:14px;
   --ring:rgba(243,241,239,.1);
-  --ring-2:rgba(243,241,239,.16);
   color-scheme:dark;
 }
 @supports (transition-timing-function:linear(0,1)){
@@ -178,7 +174,7 @@ ol,ul{list-style:none}
 .step p{font-size:1rem;color:var(--bone-2);line-height:1.6}
 
 /* contact: same row family as the links, two-line rows so nothing truncates */
-.panel--contact{max-width:560px}
+.panel--contact{max-width:none}
 .row--stack{grid-template-columns:22px minmax(0,1fr) 16px;min-height:68px}
 .row__txt{min-width:0}
 .row__txt .row__name{display:block}
@@ -301,7 +297,8 @@ html.sheet-open{overflow:hidden}
   .panel[hidden]{display:block}
   .panel__title{display:flex;align-items:center;gap:10px;padding:18px 18px 6px;font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
   .steps{max-width:720px}
-  .pull{max-width:24ch}
+  .panel--contact{max-width:calc((100% - 16px) / 2)}   /* same width as one link panel above */
+  .section .pull{max-width:24ch}
 }
 
 /* ── short landscape screens (phones sideways, short laptop windows):
@@ -338,7 +335,7 @@ html.sheet-open{overflow:hidden}
     --hx:calc(var(--gx) + var(--a) * var(--nf) + var(--gw) / 2)}
   .hero{display:block;height:auto;min-height:max(100svh,640px);padding:0}
   /* K lines up with the S of SAYED, Share and Save contact with the I of SULTANI */
-  .bar{padding-left:calc(var(--gx) - 6.5px);padding-right:var(--gx)}
+  .bar{padding-left:calc(var(--gx) - 6.5px + .05 * var(--nf));padding-right:var(--gx)}   /* + the S's left side bearing */
   .figure{position:absolute;margin:0;bottom:0;left:calc(var(--hx) - var(--hc) * var(--pw));height:var(--ph);max-height:none;translate:none}
   .portrait{-webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.6) 88%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.6) 88%,transparent 100%)}
   .name{position:absolute;z-index:0;left:0;right:0;margin:0;top:calc(max(100svh,640px) - var(--ph) + var(--capy) * var(--ph) - .491 * var(--nf));

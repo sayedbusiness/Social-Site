@@ -82,7 +82,7 @@ def main():
     # baked backlight: the key light sits behind and above the head, so only the
     # edges whose outward normal faces it catch light (hair crown, shoulder tops).
     # Built from the alpha itself, so it follows every strand; nothing is drawn around him.
-    ab = gblur(a2, 2.0)
+    ab = gblur(a2, 3.5)   # soft edge first: a jagged cut-out edge must not make beaded light
     gy_, gx_ = np.gradient(ab)
     mag = np.sqrt(gx_ ** 2 + gy_ ** 2) + 1e-6
     nx, ny = -gx_ / mag, -gy_ / mag
@@ -91,7 +91,7 @@ def main():
     edge = np.clip((a2 - gblur(a2, 3.5)) * 3.0, 0, 1)
     ys_, xs_ = np.where(a2 > 0.5)
     yy = (np.arange(a2.shape[0]) - ys_.min()) / max(1, ys_.max() - ys_.min())
-    wy = np.clip(1 - (yy - 0.40) / 0.25, 0, 1)[:, None]
+    wy = np.clip(1 - (yy - 0.20) / 0.07, 0, 1)[:, None]   # hair only; the jacket edge stays matte
     rim = (edge * facing * wy * 0.95)[..., None]
     col = 1 - (1 - col) * (1 - rim * np.array([1.0, 0.72, 0.44]))
 

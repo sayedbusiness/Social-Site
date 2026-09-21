@@ -75,11 +75,11 @@ float dust(vec2 fc, float t){
   float acc = 0.0;
   for (int L = 0; L < 3; L++){
     float fl = float(L);
-    float cell = (30.0 + fl * 24.0) * uGrain;
+    float cell = (20.0 + fl * 16.0) * uGrain;
     vec2 g = (fc - vec2(sin(t * 0.07 + fl) * 9.0, t * (4.0 + fl * 2.5)) * uGrain) / cell;
     vec2 id = floor(g), f = fract(g);
     float h = hash(id + fl * 31.7);
-    if (h < 0.40){
+    if (h < 0.58){
       vec2 pos = 0.28 + 0.44 * vec2(hash(id + 0.37), hash(id + 1.93));
       pos += 0.1 * vec2(sin(t * 0.45 + h * 21.0), cos(t * 0.38 + h * 17.0));
       float rad = (0.035 + 0.05 * hash(id + 4.1)) * (1.0 + fl * 0.45);
@@ -93,10 +93,10 @@ float dust(vec2 fc, float t){
 // the beam: a soft cone from the lamp (upper camera-left) to the light's spot
 float beam(vec2 fc){
   vec2 ab = uLight - uBeamFrom;
-  float t = clamp(dot(fc - uBeamFrom, ab) / dot(ab, ab), 0.0, 1.2);
+  float t = clamp(dot(fc - uBeamFrom, ab) / dot(ab, ab), 0.0, 1.0);
   float d = length(fc - (uBeamFrom + ab * t));
-  float w = mix(0.06, 0.55, t) * uRadius;
-  return smoothstep(w, w * 0.3, d) * smoothstep(0.05, 0.35, t);
+  float w = mix(0.035, 0.24, t) * uRadius;
+  return smoothstep(w, w * 0.3, d) * smoothstep(0.05, 0.35, t) * (1.0 - smoothstep(0.82, 1.0, t));
 }
 
 void main(){
@@ -124,7 +124,7 @@ void main(){
   col += albedo * lightCol * floorG * 1.7;
 
   float bm = beam(fc);
-  col += lightCol * bm * 0.02 * uPower * uDust;
+  col += lightCol * bm * 0.06 * uPower * uDust;
   col += lightCol * dust(fc, uTime) * bm * (0.55 + key * 0.6) * uPower * 0.6 * uDust;
 
   vec2 vv = (uv - 0.5) * vec2(uRes.x / uRes.y, 1.0);

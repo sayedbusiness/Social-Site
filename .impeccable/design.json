@@ -1,0 +1,598 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-21T23:37:29Z",
+  "title": "Design System: Sayed Sultani · Kova Media",
+  "extensions": {
+    "colorMeta": {
+      "night": {
+        "role": "neutral",
+        "displayName": "Studio Night",
+        "canonical": "#0A0908",
+        "oklch": "oklch(14.1% 0.003 69.4)",
+        "tonalRamp": [
+          "#0C0B0A",
+          "#252422",
+          "#413F3E",
+          "#5F5D5C",
+          "#81807E",
+          "#A3A19F",
+          "#C8C7C5",
+          "#F0EEEC"
+        ]
+      },
+      "night-2": {
+        "role": "neutral",
+        "displayName": "Raised Night",
+        "canonical": "#12100D",
+        "oklch": "oklch(17.4% 0.007 78.1)",
+        "tonalRamp": [
+          "#0D0B08",
+          "#262420",
+          "#423F3C",
+          "#605D59",
+          "#82807C",
+          "#A4A19D",
+          "#CAC7C2",
+          "#F1EEE9"
+        ]
+      },
+      "bone": {
+        "role": "neutral",
+        "displayName": "Bone",
+        "canonical": "#F3F1EF",
+        "oklch": "oklch(95.9% 0.003 67.8)",
+        "tonalRamp": [
+          "#0C0B0A",
+          "#252422",
+          "#413F3E",
+          "#5F5D5B",
+          "#82807E",
+          "#A3A19F",
+          "#C9C7C5",
+          "#F0EEEC"
+        ]
+      },
+      "bone-2": {
+        "role": "neutral",
+        "displayName": "Worn Bone",
+        "canonical": "#C4BBAE",
+        "oklch": "oklch(79.6% 0.021 77.3)",
+        "tonalRamp": [
+          "#100A03",
+          "#2A2319",
+          "#463F34",
+          "#645C51",
+          "#877F73",
+          "#A9A093",
+          "#CFC6B9",
+          "#F6EDDF"
+        ]
+      },
+      "dim": {
+        "role": "neutral",
+        "displayName": "Dim Stone",
+        "canonical": "#A89E91",
+        "oklch": "oklch(70.4% 0.022 74.6)",
+        "tonalRamp": [
+          "#110A03",
+          "#2A2318",
+          "#473E33",
+          "#655C50",
+          "#887F72",
+          "#AAA093",
+          "#D0C6B8",
+          "#F8EDDF"
+        ]
+      },
+      "ring": {
+        "role": "neutral",
+        "displayName": "Hairline Ring",
+        "canonical": "rgba(243,241,239,.1)",
+        "oklch": "oklch(95.9% 0.003 67.8)",
+        "tonalRamp": [
+          "#0C0B0A",
+          "#252422",
+          "#413F3E",
+          "#5F5D5B",
+          "#82807E",
+          "#A3A19F",
+          "#C9C7C5",
+          "#F0EEEC"
+        ],
+        "note": "Translucent bone; the ramp is Bone's."
+      },
+      "copper": {
+        "role": "primary",
+        "displayName": "Copper Key Light",
+        "canonical": "#D39E5A",
+        "oklch": "oklch(73.5% 0.106 71.7)",
+        "tonalRamp": [
+          "#140800",
+          "#341F00",
+          "#593700",
+          "#815202",
+          "#A7752F",
+          "#CB9652",
+          "#F3BC78",
+          "#FFEBD4"
+        ]
+      },
+      "copper-hot": {
+        "role": "primary",
+        "displayName": "Hot Copper",
+        "canonical": "#E8B676",
+        "oklch": "oklch(80.8% 0.100 72.5)",
+        "tonalRamp": [
+          "#130900",
+          "#341F00",
+          "#593800",
+          "#7F5307",
+          "#A57635",
+          "#C89758",
+          "#EFBD7D",
+          "#FFEBD3"
+        ]
+      },
+      "on-copper": {
+        "role": "primary",
+        "displayName": "Umber Label",
+        "canonical": "#1A1006",
+        "oklch": "oklch(18.3% 0.026 66.7)",
+        "tonalRamp": [
+          "#120902",
+          "#2D2217",
+          "#493D31",
+          "#685B4F",
+          "#8B7E70",
+          "#AD9F91",
+          "#D3C4B6",
+          "#FBECDD"
+        ]
+      },
+      "paper": {
+        "role": "secondary",
+        "displayName": "Paper Stock",
+        "canonical": "#EFE8DC",
+        "oklch": "oklch(93.3% 0.018 81.3)",
+        "tonalRamp": [
+          "#0F0A04",
+          "#28231A",
+          "#453F35",
+          "#635D53",
+          "#867F75",
+          "#A7A195",
+          "#CDC6BB",
+          "#F5EEE2"
+        ]
+      },
+      "paper-ink": {
+        "role": "secondary",
+        "displayName": "Bronze Ink",
+        "canonical": "#3B2812",
+        "oklch": "oklch(29.4% 0.045 68.6)",
+        "tonalRamp": [
+          "#140800",
+          "#322009",
+          "#4F3B25",
+          "#6F5942",
+          "#927C64",
+          "#B59D84",
+          "#DBC3A9",
+          "#FFEBD6"
+        ]
+      },
+      "paper-mut": {
+        "role": "secondary",
+        "displayName": "Faded Ink",
+        "canonical": "#5E4B35",
+        "oklch": "oklch(42.7% 0.043 70.4)",
+        "tonalRamp": [
+          "#140800",
+          "#31200B",
+          "#4E3C26",
+          "#6D5A43",
+          "#917C65",
+          "#B39D85",
+          "#DAC3AA",
+          "#FFEBD5"
+        ]
+      },
+      "cloth-grey": {
+        "role": "tertiary",
+        "displayName": "Logo Grey",
+        "canonical": "#666464",
+        "oklch": "oklch(50.5% 0.003 17.2)",
+        "tonalRamp": [
+          "#0C0B0B",
+          "#252323",
+          "#413F3F",
+          "#5F5D5D",
+          "#828080",
+          "#A3A1A1",
+          "#C9C7C7",
+          "#F0EEEE"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display, the name",
+        "purpose": "SAYED / SULTANI only. Archivo 800 at width 125, uppercase. Stacked clamp shown; the desktop cover computes the size from the portrait geometry, capped at 190px, line-height 1."
+      },
+      "display-list": {
+        "displayName": "Display list",
+        "purpose": "The audience lines, between 8% bone hairlines, with copper ampersands."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Step numbers of a real sequence, outlined with a 1.2px copper stroke at 85%, transparent fill."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Every section heading, always italic. The sheet title uses it at 1.75rem/1."
+      },
+      "voice": {
+        "displayName": "Voice",
+        "purpose": "The pitch under the name, always italic, 30ch (19ch on the desktop cover), with the voice scrim."
+      },
+      "quote": {
+        "displayName": "Quote",
+        "purpose": "The one pull quote, always italic, in Hot Copper."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "The opening paragraph of a section, in Bone."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text in Worn Bone, 60ch."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Step titles, in Bone."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Button, row and tab labels. 1.0625rem on Save contact, 1rem on ghost/sheet buttons and row names, .9375rem on the Share pill and tabs."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Row handles and addresses, the sheet hint, the footer."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase group title for a panel of rows (from 900px) and the card letterhead. Never above a heading."
+      }
+    },
+    "shadows": [
+      {
+        "name": "float",
+        "value": "inset 0 0 0 1px rgba(243,241,239,.1), inset 0 1px 0 rgba(255,255,255,.07), 0 8px 22px -12px rgba(0,0,0,.7)",
+        "purpose": "Share pill and the scrolled K mark (with blur(16px) saturate(150%) over rgba(22,19,16,.42))."
+      },
+      {
+        "name": "copper-press",
+        "value": "0 1px 0 rgba(255,236,208,.5) inset, 0 -1px 0 rgba(90,55,20,.35) inset, 0 14px 26px -12px rgba(4,3,2,.85), 0 2px 5px rgba(4,3,2,.5)",
+        "purpose": "Primary button at rest."
+      },
+      {
+        "name": "copper-press-hover",
+        "value": "0 1px 0 rgba(255,240,216,.6) inset, 0 -1px 0 rgba(90,55,20,.3) inset, 0 18px 30px -12px rgba(4,3,2,.9), 0 3px 7px rgba(4,3,2,.5)",
+        "purpose": "Primary button on hover (fine pointers)."
+      },
+      {
+        "name": "thumb",
+        "value": "inset 0 0 0 1px rgba(243,241,239,.1), inset 0 1px 0 rgba(255,255,255,.08), 0 6px 16px -8px rgba(0,0,0,.6)",
+        "purpose": "Selected thumb of the segmented control."
+      },
+      {
+        "name": "panel-edge",
+        "value": "padding:1px; background:linear-gradient(180deg,rgba(243,241,239,.16),rgba(243,241,239,.07)); body: inset 0 1px 0 rgba(255,255,255,.06)",
+        "purpose": "Smoked-glass panel: lit 1px gradient edge plus a top highlight; no drop shadow."
+      },
+      {
+        "name": "paper",
+        "value": "0 1px 0 rgba(255,255,255,.7) inset, 0 22px 40px -18px rgba(0,0,0,.75), 0 2px 6px rgba(0,0,0,.35)",
+        "purpose": "The business card."
+      },
+      {
+        "name": "sheet",
+        "value": "inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 0 1px rgba(243,241,239,.08), 0 -30px 80px -20px rgba(0,0,0,.7)",
+        "purpose": "Phone bottom sheet, casting upward."
+      },
+      {
+        "name": "popover",
+        "value": "inset 0 1px 0 rgba(255,255,255,.07), inset 0 0 0 1px rgba(243,241,239,.09), 0 30px 70px -20px rgba(0,0,0,.85), 0 8px 20px -8px rgba(0,0,0,.6)",
+        "purpose": "Desktop share popover."
+      },
+      {
+        "name": "voice-scrim",
+        "value": "text-shadow: 0 1px 18px rgba(8,6,4,.6)",
+        "purpose": "The pitch only, where it crosses the lit cloth. Never on the name."
+      }
+    ],
+    "motion": [
+      {
+        "name": "out",
+        "value": "cubic-bezier(.23,1,.32,1)",
+        "purpose": "Standard ease-out for state changes: colour, background, shadow, press (.16s), fades."
+      },
+      {
+        "name": "expo",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Entrances: load sequence, scroll reveals, tab panel swap (420/460ms)."
+      },
+      {
+        "name": "drawer",
+        "value": "cubic-bezier(.32,.72,0,1)",
+        "purpose": "Phone bottom sheet, .5s."
+      },
+      {
+        "name": "spring-snap",
+        "value": "linear() damped spring, ~1.1% overshoot; fallback cubic-bezier(.2,.9,.3,1.04)",
+        "purpose": "Segmented thumb, .43s."
+      },
+      {
+        "name": "spring-soft",
+        "value": "linear() damped spring, ~0.15% overshoot; fallback cubic-bezier(.22,1,.36,1)",
+        "purpose": "Icon swaps (.35s), row arrow nudge, K hover (.5s), card tilt (.6s), popover (.34s)."
+      },
+      {
+        "name": "press",
+        "value": "scale(.97) buttons · scale(.96) Share pill · scale(.92) close, .16s",
+        "purpose": "Tactile press on every control."
+      },
+      {
+        "name": "load-sequence",
+        "value": "room fade 1.2s · portrait rise 28px + blur 10px 1.1s @.08s · name lines 108%→0 .95s @.22s/.30s · role/pitch/actions rise 14px .8s @.46/.54/.62s · bar fade .8s @.7s",
+        "purpose": "Runs once, CSS only, ends at rest; skipped under reduced motion."
+      },
+      {
+        "name": "reveal-rows",
+        "value": "12px rise + fade, opacity .6s / transform .8s expo, 45ms stagger",
+        "purpose": "Link rows deal in (only if below the fold at load)."
+      },
+      {
+        "name": "reveal-lines",
+        "value": "110%→0 inside a clip, 1s expo, 90ms stagger",
+        "purpose": "Audience lines rise like the name."
+      },
+      {
+        "name": "reveal-rule",
+        "value": "quote fade .9s; rule scaleY 0→1 1.2s expo @.12s",
+        "purpose": "Pull-quote rule draws top-down."
+      },
+      {
+        "name": "light-springs",
+        "value": "critically damped; response .9s (position), .5s (power); warm-up 1.8s",
+        "purpose": "The backdrop key light following head, scroll and pointer."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-phone",
+        "value": "(min-width: 600px)",
+        "purpose": "Bar grows to 68px."
+      },
+      {
+        "name": "popover",
+        "value": "(min-width: 700px)",
+        "purpose": "Share becomes a popover under the Share button."
+      },
+      {
+        "name": "two-panel",
+        "value": "(min-width: 900px)",
+        "purpose": "Column 880px; link panels side by side with Label titles; segmented control removed."
+      },
+      {
+        "name": "short-landscape",
+        "value": "(orientation: landscape) and (max-height: 619px)",
+        "purpose": "Hero side by side: portrait left, name and actions right."
+      },
+      {
+        "name": "desktop-cover",
+        "value": "(min-width: 1180px) and (min-aspect-ratio: 5/4) and (min-height: 620px)",
+        "purpose": "The name frames the face; bar 76px."
+      },
+      {
+        "name": "desktop-cover-short",
+        "value": "desktop-cover and (max-height: 760px)",
+        "purpose": "Pitch drops to 1.5rem."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Save contact. The one copper action per screen: 56px, 14px corners, Copper press shadow, icon swap to a check when done.",
+      "html": "<div class=\"ds-stage\"><a class=\"ds-btn-primary\" href=\"#\"><svg class=\"ds-ico\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M256,136a8,8,0,0,1-8,8H232v16a8,8,0,0,1-16,0V144H200a8,8,0,0,1,0-16h16V112a8,8,0,0,1,16,0v16h16A8,8,0,0,1,256,136Zm-57.87,58.85a8,8,0,0,1-12.26,10.3C165.75,181.19,138.09,168,108,168s-57.75,13.19-77.87,37.15a8,8,0,0,1-12.25-10.3c14.94-17.78,33.52-30.41,54.17-37.17a68,68,0,1,1,71.9,0C164.6,164.44,183.18,177.07,198.13,194.85ZM108,152a52,52,0,1,0-52-52A52.06,52.06,0,0,0,108,152Z\"/></svg><span>Save contact</span></a></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-btn-primary{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 22px;border-radius:var(--r-control,14px);font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:1.0625rem;font-weight:600;letter-spacing:.005em;white-space:nowrap;text-decoration:none;color:var(--on-copper,#1A1006);background:var(--copper,#D39E5A);box-shadow:0 1px 0 rgba(255,236,208,.5) inset,0 -1px 0 rgba(90,55,20,.35) inset,0 14px 26px -12px rgba(4,3,2,.85),0 2px 5px rgba(4,3,2,.5);transition:transform .16s var(--out,cubic-bezier(.23,1,.32,1)),background-color .25s var(--out,cubic-bezier(.23,1,.32,1)),box-shadow .35s var(--out,cubic-bezier(.23,1,.32,1))}.ds-btn-primary .ds-ico{width:21px;height:21px;fill:currentColor;flex:none}.ds-btn-primary:hover{background:var(--copper-hot,#E8B676);box-shadow:0 1px 0 rgba(255,240,216,.6) inset,0 -1px 0 rgba(90,55,20,.3) inset,0 18px 30px -12px rgba(4,3,2,.9),0 3px 7px rgba(4,3,2,.5)}.ds-btn-primary:active{transform:scale(.97)}.ds-btn-primary:focus-visible{outline:2px solid var(--copper-hot,#E8B676);outline-offset:3px;border-radius:6px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Copy link in the share sheet: 7% bone fill, hairline ring, Bone label; 12% on hover.",
+      "html": "<div class=\"ds-stage\"><button class=\"ds-btn-ghost\" type=\"button\"><svg class=\"ds-ico\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z\"/></svg><span>Copy link</span></button></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-btn-ghost{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:52px;padding:0 22px;border:0;border-radius:var(--r-control,14px);font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:1rem;font-weight:600;letter-spacing:.005em;cursor:pointer;color:var(--bone,#F3F1EF);background:rgba(243,241,239,.07);box-shadow:inset 0 0 0 1px var(--ring,rgba(243,241,239,.1));transition:transform .16s var(--out,cubic-bezier(.23,1,.32,1)),background-color .25s var(--out,cubic-bezier(.23,1,.32,1))}.ds-btn-ghost .ds-ico{width:19px;height:19px;fill:currentColor;flex:none}.ds-btn-ghost:hover{background:rgba(243,241,239,.12)}.ds-btn-ghost:active{transform:scale(.97)}.ds-btn-ghost:focus-visible{outline:2px solid var(--copper-hot,#E8B676);outline-offset:3px;border-radius:6px}"
+    },
+    {
+      "name": "Share Pill",
+      "kind": "nav",
+      "refersTo": "share-pill",
+      "description": "The floating bar control: fully round, frosted Float glass over the moving room. Frost is reserved for floating controls.",
+      "html": "<div class=\"ds-room\"><button class=\"ds-share\" type=\"button\"><svg class=\"ds-ico\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z\"/></svg>Share</button></div>",
+      "css": ".ds-room{padding:28px;border-radius:16px;background:radial-gradient(60% 80% at 40% 30%,rgba(150,100,52,.5),rgba(40,27,15,0) 76%),linear-gradient(180deg,#17120D,#0A0908)}.ds-share{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 17px 0 14px;border:0;border-radius:999px;cursor:pointer;font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:.9375rem;font-weight:600;letter-spacing:.005em;color:var(--bone,#F3F1EF);background:rgba(22,19,16,.42);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);box-shadow:inset 0 0 0 1px var(--ring,rgba(243,241,239,.1)),inset 0 1px 0 rgba(255,255,255,.07),0 8px 22px -12px rgba(0,0,0,.7);transition:background-color .2s var(--out,cubic-bezier(.23,1,.32,1)),transform .16s var(--out,cubic-bezier(.23,1,.32,1))}.ds-share .ds-ico{width:18px;height:18px;fill:currentColor}.ds-share:hover{background:rgba(52,45,37,.55)}.ds-share:active{transform:scale(.96)}.ds-share:focus-visible{outline:2px solid var(--copper-hot,#E8B676);outline-offset:3px;border-radius:6px}"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "chip",
+      "refersTo": "segmented",
+      "description": "Kova Media / Personal tabs under 900px: 4px-inset track, 10px thumb that springs across (concentric with the 14px track).",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-seg\" role=\"tablist\" data-on=\"0\"><span class=\"ds-seg__thumb\"></span><button type=\"button\" role=\"tab\" aria-selected=\"true\">Kova Media</button><button type=\"button\" role=\"tab\" aria-selected=\"false\">Personal</button></div></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-seg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:var(--r-control,14px);background:rgba(15,13,11,.82);box-shadow:inset 0 0 0 1px var(--ring,rgba(243,241,239,.1))}.ds-seg__thumb{position:absolute;left:4px;top:4px;bottom:4px;width:calc(50% - 4px);border-radius:10px;background:rgba(243,241,239,.11);box-shadow:inset 0 0 0 1px rgba(243,241,239,.1),inset 0 1px 0 rgba(255,255,255,.08),0 6px 16px -8px rgba(0,0,0,.6);transition:transform .43s var(--spring-snap,cubic-bezier(.2,.9,.3,1.04))}.ds-seg[data-on='1'] .ds-seg__thumb{transform:translateX(100%)}.ds-seg button{position:relative;z-index:1;min-height:44px;border:0;border-radius:10px;background:none;cursor:pointer;font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:.9375rem;font-weight:600;color:#ADA396;transition:color .25s var(--out,cubic-bezier(.23,1,.32,1))}.ds-seg button[aria-selected='true']{color:var(--bone,#F3F1EF)}.ds-seg button:hover{color:var(--bone-2,#C4BBAE)}.ds-seg button:focus-visible{outline:2px solid var(--copper-hot,#E8B676);outline-offset:3px;border-radius:6px}"
+    },
+    {
+      "name": "Link Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Smoked-glass panel (84% night, lit 1px gradient edge, top sheen) holding link rows: icon | name | handle | arrow-up-right.",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-panel\"><div class=\"ds-panel__body\"><p class=\"ds-panel__title\">Kova Media</p><a class=\"ds-row\" href=\"#\"><svg class=\"ds-ico\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z\"/></svg><span class=\"ds-row__name\">Instagram</span><span class=\"ds-row__meta\">@kovamedia.agency</span><svg class=\"ds-ico ds-row__go\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z\"/></svg></a><a class=\"ds-row\" href=\"#\"><svg class=\"ds-ico\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z\"/></svg><span class=\"ds-row__name\">Instagram</span><span class=\"ds-row__meta\">@sayedsalez</span><svg class=\"ds-ico ds-row__go\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z\"/></svg></a></div></div></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-panel{border-radius:var(--r-surface,20px);padding:1px;background:linear-gradient(180deg,rgba(243,241,239,.16),rgba(243,241,239,.07));overflow:hidden}.ds-panel__body{border-radius:19px;overflow:hidden;background:linear-gradient(180deg,rgba(243,241,239,.05),rgba(243,241,239,0) 42%),rgba(15,13,11,.84);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}.ds-panel__title{margin:0;padding:18px 18px 6px;font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:.8125rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim,#A89E91)}.ds-row{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr) auto 16px;align-items:center;column-gap:14px;min-height:62px;padding:12px 18px;text-decoration:none;color:var(--bone,#F3F1EF);font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);transition:background-color .2s var(--out,cubic-bezier(.23,1,.32,1))}.ds-row + .ds-row::before{content:'';position:absolute;left:54px;right:18px;top:0;height:1px;background:rgba(243,241,239,.07)}.ds-row .ds-ico{width:22px;height:22px;fill:currentColor;transition:color .25s var(--out,cubic-bezier(.23,1,.32,1)),transform .35s var(--spring-soft,cubic-bezier(.22,1,.36,1))}.ds-row__name{font-size:1rem;font-weight:600;letter-spacing:.003em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-row__meta{font-size:.875rem;color:var(--dim,#A89E91);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;transition:color .2s var(--out,cubic-bezier(.23,1,.32,1))}.ds-row .ds-row__go{width:16px;height:16px;color:var(--dim,#A89E91)}.ds-row:hover{background:rgba(243,241,239,.045)}.ds-row:hover .ds-ico{color:var(--copper-hot,#E8B676)}.ds-row:hover .ds-row__go{transform:translate3d(2px,-2px,0);color:var(--bone,#F3F1EF)}.ds-row:hover .ds-row__meta{color:var(--bone-2,#C4BBAE)}.ds-row:active{background:rgba(243,241,239,.06)}.ds-row:focus-visible{outline:2px solid var(--copper-hot,#E8B676);outline-offset:3px;border-radius:6px}"
+    },
+    {
+      "name": "Apply Row",
+      "kind": "custom",
+      "refersTo": "row-stacked",
+      "description": "The one distinguished row: a copper wash (16% to 4%), Hot Copper icon and arrow, two lines so nothing truncates. First in the contact panel.",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-cpanel\"><div class=\"ds-cpanel__body\"><a class=\"ds-apply\" href=\"#\"><svg class=\"ds-ico\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M227.32,28.68a16,16,0,0,0-15.66-4.08l-.15,0L19.57,82.84a16,16,0,0,0-2.49,29.8L102,154l41.3,84.87A15.86,15.86,0,0,0,157.74,248q.69,0,1.38-.06a15.88,15.88,0,0,0,14-11.51l58.2-191.94c0-.05,0-.1,0-.15A16,16,0,0,0,227.32,28.68ZM157.83,231.85l-.05.14,0-.07-40.06-82.3,48-48a8,8,0,0,0-11.31-11.31l-48,48L24.08,98.25l-.07,0,.14,0L216,40Z\"/></svg><span class=\"ds-apply__txt\"><span class=\"ds-apply__name\">Apply to work with us</span><span class=\"ds-apply__meta\">kovamedia.agency/apply</span></span><svg class=\"ds-ico ds-apply__go\" viewBox=\"0 0 256 256\" aria-hidden=\"true\"><path d=\"M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z\"/></svg></a></div></div></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-cpanel{border-radius:var(--r-surface,20px);padding:1px;background:linear-gradient(180deg,rgba(243,241,239,.16),rgba(243,241,239,.07));overflow:hidden}.ds-cpanel__body{border-radius:19px;overflow:hidden;background:rgba(15,13,11,.84);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}.ds-apply{display:grid;grid-template-columns:22px minmax(0,1fr) 16px;align-items:center;column-gap:14px;min-height:68px;padding:12px 18px;text-decoration:none;font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);color:var(--bone,#F3F1EF);background:linear-gradient(90deg,rgba(211,158,90,.16),rgba(211,158,90,.04));transition:background-color .2s var(--out,cubic-bezier(.23,1,.32,1))}.ds-apply .ds-ico{width:22px;height:22px;fill:currentColor;color:var(--copper-hot,#E8B676)}.ds-apply .ds-apply__go{width:16px;height:16px;transition:transform .35s var(--spring-soft,cubic-bezier(.22,1,.36,1))}.ds-apply__txt{min-width:0}.ds-apply__name{display:block;font-size:1.0625rem;font-weight:600}.ds-apply__meta{display:block;margin-top:1px;font-size:.875rem;color:#D8D0C5}.ds-apply:hover{background:linear-gradient(90deg,rgba(211,158,90,.24),rgba(211,158,90,.07))}.ds-apply:hover .ds-apply__go{transform:translate3d(2px,-2px,0)}.ds-apply:focus-visible{outline:2px solid var(--copper-hot,#E8B676);outline-offset:3px;border-radius:6px}"
+    },
+    {
+      "name": "Hero Name Lockup",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "The masthead: width-125 caps at 800, then the copper role line and the serif-italic voice. Stacked-mode proportions.",
+      "html": "<div class=\"ds-hero\"><h1 class=\"ds-name\"><span>Sayed</span><span>Sultani</span></h1><p class=\"ds-role\">Founder, Kova Media</p><p class=\"ds-pitch\">I buy attention and turn it into revenue you can actually trace.</p></div>",
+      "css": ".ds-hero{padding:32px 24px;border-radius:16px;text-align:center;background:radial-gradient(70% 60% at 50% 20%,rgba(150,100,52,.45),rgba(40,27,15,0) 76%),linear-gradient(180deg,#17120D,#0A0908)}.ds-name{margin:0;font-family:var(--display,\"Archivo Display\",\"Archivo\",system-ui,sans-serif);font-weight:800;font-stretch:125%;text-transform:uppercase;font-size:clamp(2.55rem,8vw,4rem);line-height:.86;letter-spacing:-.02em;color:var(--bone,#F3F1EF)}.ds-name span{display:block}.ds-role{margin:16px 0 0;font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:1.0625rem;font-weight:600;letter-spacing:.01em;line-height:1.3;color:var(--copper,#D39E5A)}.ds-pitch{margin:10px auto 0;max-width:30ch;font-family:var(--serif,\"Instrument Serif\",\"Iowan Old Style\",Charter,Georgia,serif);font-style:italic;font-weight:400;font-size:1.5rem;line-height:1.22;color:var(--bone,#F3F1EF);text-wrap:balance;text-shadow:0 1px 18px rgba(8,6,4,.6)}"
+    },
+    {
+      "name": "Pull Quote",
+      "kind": "custom",
+      "refersTo": "quote",
+      "description": "The one pull quote: serif italic in Hot Copper with a 1px copper rule fading downward.",
+      "html": "<div class=\"ds-stage\"><p class=\"ds-pull\">The creative is the campaign. The reporting is the relationship.</p></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-pull{position:relative;margin:0;padding-left:clamp(18px,4vw,28px);font-family:var(--serif,\"Instrument Serif\",\"Iowan Old Style\",Charter,Georgia,serif);font-style:italic;font-weight:400;font-size:clamp(1.625rem,5.4vw,2.25rem);line-height:1.16;letter-spacing:-.008em;color:var(--copper-hot,#E8B676);text-wrap:balance}.ds-pull::before{content:'';position:absolute;left:0;top:.18em;bottom:.14em;width:1px;background:linear-gradient(180deg,var(--copper,#D39E5A),rgba(211,158,90,.15))}"
+    },
+    {
+      "name": "Audience List",
+      "kind": "custom",
+      "refersTo": "display-list",
+      "description": "Who it's for: width-125 caps between 8% bone hairlines, copper ampersands.",
+      "html": "<div class=\"ds-stage\"><ul class=\"ds-who\"><li>E-commerce <span class=\"ds-amp\">&amp;</span> DTC</li><li>Streetwear labels</li><li>Roofing <span class=\"ds-amp\">&amp;</span> home services</li></ul></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-who{display:grid;gap:2px;margin:0;padding:0;list-style:none}.ds-who li{font-family:var(--display,\"Archivo Display\",\"Archivo\",system-ui,sans-serif);font-weight:800;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em;line-height:1.02;font-size:clamp(1.375rem,5.9vw,2.6rem);color:var(--bone,#F3F1EF);padding:.3em 0;border-top:1px solid rgba(243,241,239,.08);text-wrap:balance}.ds-who li:last-child{border-bottom:1px solid rgba(243,241,239,.08)}.ds-amp{color:var(--copper,#D39E5A)}"
+    },
+    {
+      "name": "Paper Business Card",
+      "kind": "card",
+      "refersTo": "card-paper",
+      "description": "The share sheet's card: Paper Stock with bronze-tinted grain, K letterhead, rounded-module QR in Bronze Ink (abbreviated here to its finder patterns), width-125 name. Leans toward the pointer on a soft spring.",
+      "html": "<div class=\"ds-stage\"><figure class=\"ds-card\"><div class=\"ds-card__top\"><i class=\"ds-card__k\"></i><span>Kova Media</span></div><svg class=\"ds-qr\" viewBox=\"-2 -2 33 33\" aria-hidden=\"true\"><g fill=\"currentColor\"><path fill-rule=\"evenodd\" d=\"M1.6,0 h3.8 a1.6,1.6 0 0 1 1.6,1.6 v3.8 a1.6,1.6 0 0 1 -1.6,1.6 h-3.8 a1.6,1.6 0 0 1 -1.6,-1.6 v-3.8 a1.6,1.6 0 0 1 1.6,-1.6z M1.9,1 h3.2 a.9,.9 0 0 1 .9,.9 v3.2 a.9,.9 0 0 1 -.9,.9 h-3.2 a.9,.9 0 0 1 -.9,-.9 v-3.2 a.9,.9 0 0 1 .9,-.9z\"/><rect x=\"2\" y=\"2\" width=\"3\" height=\"3\" rx=\".9\"/><path fill-rule=\"evenodd\" d=\"M23.6,0 h3.8 a1.6,1.6 0 0 1 1.6,1.6 v3.8 a1.6,1.6 0 0 1 -1.6,1.6 h-3.8 a1.6,1.6 0 0 1 -1.6,-1.6 v-3.8 a1.6,1.6 0 0 1 1.6,-1.6z M23.9,1 h3.2 a.9,.9 0 0 1 .9,.9 v3.2 a.9,.9 0 0 1 -.9,.9 h-3.2 a.9,.9 0 0 1 -.9,-.9 v-3.2 a.9,.9 0 0 1 .9,-.9z\"/><rect x=\"24\" y=\"2\" width=\"3\" height=\"3\" rx=\".9\"/><path fill-rule=\"evenodd\" d=\"M1.6,22 h3.8 a1.6,1.6 0 0 1 1.6,1.6 v3.8 a1.6,1.6 0 0 1 -1.6,1.6 h-3.8 a1.6,1.6 0 0 1 -1.6,-1.6 v-3.8 a1.6,1.6 0 0 1 1.6,-1.6z M1.9,23 h3.2 a.9,.9 0 0 1 .9,.9 v3.2 a.9,.9 0 0 1 -.9,.9 h-3.2 a.9,.9 0 0 1 -.9,-.9 v-3.2 a.9,.9 0 0 1 .9,-.9z\"/><rect x=\"2\" y=\"24\" width=\"3\" height=\"3\" rx=\".9\"/><rect x=\"10.06\" y=\"10.06\" width=\".88\" height=\".88\" rx=\".3\"/><rect x=\"12.06\" y=\"10.06\" width=\".88\" height=\".88\" rx=\".3\"/><rect x=\"14.06\" y=\"12.06\" width=\".88\" height=\".88\" rx=\".3\"/><rect x=\"16.06\" y=\"14.06\" width=\".88\" height=\".88\" rx=\".3\"/><rect x=\"18.06\" y=\"12.06\" width=\".88\" height=\".88\" rx=\".3\"/></g></svg><figcaption><div class=\"ds-card__name\">Sayed Sultani</div><div class=\"ds-card__url\">link.kovamedia.agency</div></figcaption></figure></div>",
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-card{position:relative;margin:0 auto;width:min(100%,300px);border-radius:18px;padding:18px 18px 16px;color:var(--paper-ink,#3B2812);background:var(--paper,#EFE8DC) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .23 0 0 0 0 .16 0 0 0 0 .07 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23p)'/%3E%3C/svg%3E\");box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 22px 40px -18px rgba(0,0,0,.75),0 2px 6px rgba(0,0,0,.35);transition:transform .6s var(--spring-soft,cubic-bezier(.22,1,.36,1))}.ds-card:hover{transform:perspective(900px) rotateX(-3deg) rotateY(4deg)}.ds-card__top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.ds-card__k{display:block;width:13px;height:17px;background:var(--paper-ink,#3B2812);-webkit-mask:url('/assets/brand/kova-k-white.png') center/contain no-repeat;mask:url('/assets/brand/kova-k-white.png') center/contain no-repeat}.ds-card__top span{font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--paper-mut,#5E4B35)}.ds-qr{display:block;width:100%;height:auto;color:var(--paper-ink,#3B2812)}.ds-card figcaption{margin:0}.ds-card__name{margin-top:12px;font-family:var(--display,\"Archivo Display\",\"Archivo\",system-ui,sans-serif);font-weight:800;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em;font-size:1.25rem;line-height:1;color:var(--paper-ink,#3B2812)}.ds-card__url{margin-top:6px;font-family:var(--sans,\"Archivo\",system-ui,-apple-system,\"Helvetica Neue\",Arial,sans-serif);font-size:.8125rem;font-weight:600;color:var(--paper-mut,#5E4B35)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The After-Hours Sitting",
+    "overview": "The page is a portrait sitting in Kova's studio after hours. Sayed stands in front of a hand-painted canvas cloth mottled in the Kova logo's grey and bronze. One copper key light hangs behind his head, catches the crown of his hair and drifts toward the visitor's hand. Everything else is the room: a warm near-black ground, bone type, film grain and a vignette. It is dark because of where it is used: a phone opened mid-conversation, often in a dim room, where it has to feel expensive, warm, quiet and very smooth.\n\nDensity is low and the order follows the job. The first screen is face, name, one line in his voice, and Save contact. Scrolling gives the accounts, a short about, who it is for, how the work runs, and the ways to start. Three voices carry the page: expanded Archivo caps name things, Instrument Serif italic is Sayed talking, and Archivo at 400 and 600 does the work. Copper is the only hue, and it behaves like light.\n\nMotion happens once and then gets out of the way: a load sequence that ends at rest, three scroll entrances, springs on the controls, and a living backdrop that calms as reading starts. Every effect is a layer over a complete page. Without WebGL the CSS paints the same room, without JavaScript nothing is hidden, and reduced motion gets one still frame. Confirmed rejections: the link-page default (avatar circle, stacked pill links, gradient wallpaper) and any blue.",
+    "keyCharacteristics": [
+      "Night room, bone type, one copper light, no blue.",
+      "A living, hand-painted cloth backdrop (WebGL, one draw call per frame) lit by a copper key light that follows the portrait, the scroll and the pointer.",
+      "The name as a masthead: Archivo 800 at width 125, framing the face on desktop.",
+      "Serif italic for the voice, never for reading text.",
+      "Smoked-glass panels with lit hairline edges; frosted blur only on the controls that float over the room.",
+      "Three measured layout modes: stacked, short landscape, desktop cover.",
+      "Contrast measured against the brightest backdrop pixel behind every text element."
+    ],
+    "rules": [
+      {
+        "name": "The One Light Rule",
+        "body": "Copper is the only hue on the page, and it behaves like light. It marks the one primary action, a few typographic accents, and hover. There is no second accent and no blue anywhere, in UI or in imagery.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lit Room Rule",
+        "body": "Text is tested against the brightest part of the room behind it, not against Studio Night. `tools/contrast.py` hides the text, takes the 98th-percentile luminance of the backdrop inside each text box (with the pointer parked on the element on desktop, pulling the light toward it), and computes the WCAG ratio. Every element passes AA; the lowest recorded is 4.6:1. On flat Studio Night the ratios are far higher (Bone 17.7:1, Worn Bone 10.5:1, Dim Stone 7.5:1, Copper 8.4:1), which is exactly why flat Night is not the test. Under `prefers-contrast: more`, Dim Stone lifts to #B9AE9F, the ring to 40%, and row metadata switches to Worn Bone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Voices Rule",
+        "body": "Width-125 capitals name things: the person, the audience, the steps, the name on the card. Serif italic is Sayed speaking: the pitch, section headings, the pull quote, the sheet title. Archivo 400 and 600 does everything else. A new element joins one of the three voices; it never mixes them.",
+        "section": "typography"
+      },
+      {
+        "name": "The Three Weights Rule",
+        "body": "400, 600 and 800 only. Nothing light, and no 700: headings get their weight from the italic face and size, not from bold.",
+        "section": "typography"
+      },
+      {
+        "name": "The Italic Voice Rule",
+        "body": "Instrument Serif appears only in italic. The upright cut is declared in the stylesheet but unused; do not start using it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Name Frames the Face Rule",
+        "body": "On the desktop cover, the name's position comes from the photograph, not from a grid. Change the portrait or the face and you re-measure; never nudge the numbers by eye.",
+        "section": "layout"
+      },
+      {
+        "name": "The Spare Height Rule",
+        "body": "On phones the portrait gets whatever height the name, pitch and Save contact leave over. Save contact never leaves the first screen, on any phone from 320px wide.",
+        "section": "layout"
+      },
+      {
+        "name": "The Light, Not Shadow Rule",
+        "body": "The room and its key light create the depth. Shadows are soft, offset downward (upward for the bottom sheet) and pulled in with negative spread. No coloured glows around objects and no hard offsets; the only text shadow is the dark scrim under the pitch.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Frost Only Floats Rule",
+        "body": "Backdrop blur is only for controls floating over the moving room. Content panels are smoked glass at 84%, dense enough that the moving light only tints what people are reading.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Calm Reading Rule",
+        "body": "Nothing busy moves behind body copy. The dust is gone by 60% of the hero's scroll, the cloth's drift drops to a fifth, the pointer's pull on the light halves, and no pointer effect ever runs on a panel. The light stays alive behind the copy, but slow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Concentric Corners Rule",
+        "body": "An inner radius equals the outer radius minus the inset: the segmented track is 14px with 4px of padding, so its thumb is 10px; a panel is 20px with a 1px edge, so its body is 19px.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Hairline Rule",
+        "body": "Edges and dividers are 1px of bone at 7% to 16%. The only coloured side rule is the pull quote's, and it is 1px.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Arrow Tells Where Rule",
+        "body": "`arrow-up-right` means the link leaves the page (Kova, the socials, Apply); `arrow-right` means an action on the phone (call, text, email).",
+        "section": "components"
+      },
+      {
+        "name": "The Rest State Rule",
+        "body": "Every animation starts from, and ends in, the page as it reads with no JavaScript. Scroll entrances arm only for content still below the fold at load, and remove their classes once they settle.",
+        "section": "components"
+      },
+      {
+        "name": "The Effects Are a Layer Rule",
+        "body": "No WebGL, no JavaScript, reduced motion and reduced transparency each still render the complete page: the CSS room, visible content, one still frame of light, and solid Night fills instead of glass.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** keep every screen to Studio Night, the three bone steps, Copper Key Light and Hot Copper, with Paper Stock only on the card.",
+      "**Do** run `tools/contrast.py` at a phone size and a desktop size after any colour, type or backdrop change. AA against the brightest backdrop pixel behind the text is the bar.",
+      "**Do** put any new destination in the row family (icon, name, handle, arrow) inside a smoked-glass panel, with `arrow-up-right` for a link that leaves the page and `arrow-right` for an action on the phone.",
+      "**Do** set new section headings in the Headline style (serif italic 400, 34px to 52px) with the section rhythm above them.",
+      "**Do** re-run `tools/portrait.py` when the portrait changes, paste its `--band`, `--hc` and `--capy` into the desktop block, then re-render `og.jpg` and run `tools/qa.py`.",
+      "**Do** offset an element that also runs a transform animation with the separate `translate` property (as the phone portrait's -10% shift does); otherwise the animation's fill wipes the offset.",
+      "**Do** keep hover styles behind `(hover: hover) and (pointer: fine)`, and give every control a target of at least 44px.",
+      "**Do** keep the fallbacks whole: reduced motion (one still frame, content shown), reduced transparency (solid Night fills), more contrast (a 40% ring, Dim Stone at #B9AE9F), forced colours (CanvasText borders and marks)."
+    ],
+    "donts": [
+      "**Don't** introduce blue, teal or any second accent hue, in the UI or in imagery.",
+      "**Don't** fall back to the link-page default this page refuses: an avatar circle, a stack of pill-shaped link buttons, or a decorative gradient wallpaper. The CSS gradients in the backdrop are the no-WebGL rendering of the same lit room, not wallpaper.",
+      "**Don't** draw a rim, outline or drop shadow around the portrait. The copper rim read as a sticker, and the portrait's mask clipped its drop shadow into a straight seam. Light lives in the photo and in the room.",
+      "**Don't** put a text-shadow on the name. Each line reveals through a clip, and a clipped blur shows as a box.",
+      "**Don't** animate `opacity` on the top bar itself. An animated ancestor becomes a backdrop root and the frosted controls stop blurring; animate its children instead.",
+      "**Don't** put moving light behind reading: no pointer spotlight on panels and no shine sweep on buttons (both were removed from this build).",
+      "**Don't** add frosted blur to content panels, or one identical entrance to every block. The page has one load sequence and three entrances, each designed for its content.",
+      "**Don't** place a small uppercase label above a heading. Label type only names a group of rows or the card's letterhead.",
+      "**Don't** number sections. Numerals mark the steps of a real sequence only.",
+      "**Don't** use Unicode glyphs or emoji as icons. Icons are Phosphor Regular, built into the sprite by `tools/build.py`."
+    ]
+  }
+}

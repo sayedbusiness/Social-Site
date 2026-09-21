@@ -35,7 +35,7 @@ An independent impeccable finish review returned REBUILD on the hero sitting. Do
 - Deleted the CSS copper "rim" (it read as a sticker outline) and the portrait's
   drop-shadow (its own mask clipped it, which left a straight seam beside the shoulder).
 - `tools/portrait.py` now bakes a strand-accurate backlight into the photo. Only the
-  edges facing the light (hair crown, shoulder tops) catch it. It also applies one
+  edges facing the light catch it, on the HAIR only (on the jacket edge the same light read as beaded trim). It also applies one
   warm grade shared with the room and cleans the white specks from the curls.
 - The key light now sits behind the head: a lighter painted patch under it plus a
   gentle glow. The cloth reads as fabric (hanging folds and brushwork, less swirl).
@@ -65,7 +65,7 @@ images (Sayed: see docs/IMAGE-PROMPTS.md).
 - Never animate `opacity` on `.bar` itself. An animated ancestor becomes a backdrop
   root and the glass buttons stop blurring. Animate the children instead.
 - `--dim` is #A89E91, lighter than the site's #958B7C, because this room is lit.
-  The copper panel glow must not bleed through the panel body (body alpha .95).
+  Panels are glass again (body alpha .84 + top sheen) now that the pointer glow is gone. Never put a light BEHIND a translucent panel: it bleeds into the text.
 
 ## Open for Sayed
 - Deploy + domain (see README).
