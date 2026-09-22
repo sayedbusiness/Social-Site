@@ -45,7 +45,8 @@ python3 tools/serve.py 8787      # http://127.0.0.1:8787
 
 ```sh
 python3 tools/serve.py 8787 &
-python3 tools/qa.py /tmp/kova-qa --shots      # 24 sizes: overflow, fold, name vs face, errors
+python3 tools/qa.py /tmp/kova-qa --shots      # 30 sizes: overflow, clipped text, fold, name vs face, errors
+python3 tools/qa.py /tmp/kova-wk --engine=webkit   # same sweep in Safari's engine (also: --engine=firefox)
 python3 tools/contrast.py 390 844 1           # WCAG contrast against the brightest backdrop pixel
 python3 tools/contrast.py 1440 900 0
 ```

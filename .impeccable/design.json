@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-21T23:37:29Z",
+  "generatedAt": "2026-09-21T23:57:01Z",
   "title": "Design System: Sayed Sultani · Kova Media",
   "extensions": {
     "colorMeta": {
@@ -9,15 +9,22 @@
         "displayName": "Studio Night",
         "canonical": "#0A0908",
         "oklch": "oklch(14.1% 0.003 69.4)",
+        "rampFamily": "night",
         "tonalRamp": [
-          "#0C0B0A",
-          "#252422",
-          "#413F3E",
-          "#5F5D5C",
-          "#81807E",
-          "#A3A19F",
-          "#C8C7C5",
-          "#F0EEEC"
+          "#000000",
+          "#040302",
+          "#060504",
+          "#080604",
+          "#0A0908",
+          "#0F0D0B"
+        ],
+        "rampLabels": [
+          "shadow black: drop shadows 35-85%, portrait mask alpha",
+          "copper press shadow 50-90%",
+          "sheet backdrop 62%",
+          "voice scrim 60%",
+          "Studio Night: ground, bar scrim 96% to 0",
+          "smoked glass: segmented track 82%, panel bodies 84%"
         ]
       },
       "night-2": {
@@ -25,15 +32,22 @@
         "displayName": "Raised Night",
         "canonical": "#12100D",
         "oklch": "oklch(17.4% 0.007 78.1)",
+        "rampFamily": "raised-night",
         "tonalRamp": [
-          "#0D0B08",
-          "#262420",
-          "#423F3C",
-          "#605D59",
-          "#82807C",
-          "#A4A19D",
-          "#CAC7C2",
-          "#F1EEE9"
+          "#100D0A",
+          "#12100D",
+          "#161310",
+          "#17120D",
+          "#1B1814",
+          "#342D25"
+        ],
+        "rampLabels": [
+          "fallback room, middle stop",
+          "Raised Night: sheet base, reduced-transparency panels",
+          "frosted fill 42%: Share pill, scrolled K mark",
+          "fallback room, top stop",
+          "Night 3: reduced-transparency glass fill, sheet top edge",
+          "hover smoke 55%: Share pill"
         ]
       },
       "bone": {
@@ -41,15 +55,22 @@
         "displayName": "Bone",
         "canonical": "#F3F1EF",
         "oklch": "oklch(95.9% 0.003 67.8)",
+        "rampFamily": "bone",
         "tonalRamp": [
-          "#0C0B0A",
-          "#252422",
-          "#413F3E",
-          "#5F5D5B",
-          "#82807E",
-          "#A3A19F",
-          "#C9C7C5",
-          "#F0EEEC"
+          "#A89E91",
+          "#B9AE9F",
+          "#C4BBAE",
+          "#D8D0C5",
+          "#F3F1EF",
+          "#FFFFFF"
+        ],
+        "rampLabels": [
+          "Dim Stone",
+          "Dim Stone under prefers-contrast: more",
+          "Worn Bone",
+          "Apply row meta line",
+          "Bone (tint ladder 4.5-40%: hover, sheen, press, separators, rings, thumb, grip, underline)",
+          "white, light only: inset highlights 6-8%, card top edge 70%, card glint 55%"
         ]
       },
       "bone-2": {
@@ -57,15 +78,22 @@
         "displayName": "Worn Bone",
         "canonical": "#C4BBAE",
         "oklch": "oklch(79.6% 0.021 77.3)",
+        "rampFamily": "bone",
         "tonalRamp": [
-          "#100A03",
-          "#2A2319",
-          "#463F34",
-          "#645C51",
-          "#877F73",
-          "#A9A093",
-          "#CFC6B9",
-          "#F6EDDF"
+          "#A89E91",
+          "#B9AE9F",
+          "#C4BBAE",
+          "#D8D0C5",
+          "#F3F1EF",
+          "#FFFFFF"
+        ],
+        "rampLabels": [
+          "Dim Stone",
+          "Dim Stone under prefers-contrast: more",
+          "Worn Bone",
+          "Apply row meta line",
+          "Bone (tint ladder 4.5-40%: hover, sheen, press, separators, rings, thumb, grip, underline)",
+          "white, light only: inset highlights 6-8%, card top edge 70%, card glint 55%"
         ]
       },
       "dim": {
@@ -73,15 +101,22 @@
         "displayName": "Dim Stone",
         "canonical": "#A89E91",
         "oklch": "oklch(70.4% 0.022 74.6)",
+        "rampFamily": "bone",
         "tonalRamp": [
-          "#110A03",
-          "#2A2318",
-          "#473E33",
-          "#655C50",
-          "#887F72",
-          "#AAA093",
-          "#D0C6B8",
-          "#F8EDDF"
+          "#A89E91",
+          "#B9AE9F",
+          "#C4BBAE",
+          "#D8D0C5",
+          "#F3F1EF",
+          "#FFFFFF"
+        ],
+        "rampLabels": [
+          "Dim Stone",
+          "Dim Stone under prefers-contrast: more",
+          "Worn Bone",
+          "Apply row meta line",
+          "Bone (tint ladder 4.5-40%: hover, sheen, press, separators, rings, thumb, grip, underline)",
+          "white, light only: inset highlights 6-8%, card top edge 70%, card glint 55%"
         ]
       },
       "ring": {
@@ -89,32 +124,50 @@
         "displayName": "Hairline Ring",
         "canonical": "rgba(243,241,239,.1)",
         "oklch": "oklch(95.9% 0.003 67.8)",
+        "rampFamily": "bone",
         "tonalRamp": [
-          "#0C0B0A",
-          "#252422",
-          "#413F3E",
-          "#5F5D5B",
-          "#82807E",
-          "#A3A19F",
-          "#C9C7C5",
-          "#F0EEEC"
+          "#A89E91",
+          "#B9AE9F",
+          "#C4BBAE",
+          "#D8D0C5",
+          "#F3F1EF",
+          "#FFFFFF"
         ],
-        "note": "Translucent bone; the ramp is Bone's."
+        "rampLabels": [
+          "Dim Stone",
+          "Dim Stone under prefers-contrast: more",
+          "Worn Bone",
+          "Apply row meta line",
+          "Bone (tint ladder 4.5-40%: hover, sheen, press, separators, rings, thumb, grip, underline)",
+          "white, light only: inset highlights 6-8%, card top edge 70%, card glint 55%"
+        ],
+        "note": "Translucent bone; its ramp is the bone ladder."
       },
       "copper": {
         "role": "primary",
         "displayName": "Copper Key Light",
         "canonical": "#D39E5A",
         "oklch": "oklch(73.5% 0.106 71.7)",
+        "rampFamily": "copper",
         "tonalRamp": [
-          "#140800",
-          "#341F00",
-          "#593700",
-          "#815202",
-          "#A7752F",
-          "#CB9652",
-          "#F3BC78",
-          "#FFEBD4"
+          "#281B0F",
+          "#5A3714",
+          "#603E1E",
+          "#966434",
+          "#D39E5A",
+          "#E8B676",
+          "#FFECD0",
+          "#FFF0D8"
+        ],
+        "rampLabels": [
+          "fallback glow edge 0%",
+          "press shade 30-35% (primary button lower inner edge)",
+          "fallback glow middle 26%",
+          "fallback key glow 50%",
+          "Copper Key Light (washes 4-24%, rule tail 15%, numeral stroke 85%)",
+          "Hot Copper",
+          "bevel highlight 50% (primary at rest)",
+          "bevel highlight 60% (primary on hover)"
         ]
       },
       "copper-hot": {
@@ -122,15 +175,26 @@
         "displayName": "Hot Copper",
         "canonical": "#E8B676",
         "oklch": "oklch(80.8% 0.100 72.5)",
+        "rampFamily": "copper",
         "tonalRamp": [
-          "#130900",
-          "#341F00",
-          "#593800",
-          "#7F5307",
-          "#A57635",
-          "#C89758",
-          "#EFBD7D",
-          "#FFEBD3"
+          "#281B0F",
+          "#5A3714",
+          "#603E1E",
+          "#966434",
+          "#D39E5A",
+          "#E8B676",
+          "#FFECD0",
+          "#FFF0D8"
+        ],
+        "rampLabels": [
+          "fallback glow edge 0%",
+          "press shade 30-35% (primary button lower inner edge)",
+          "fallback glow middle 26%",
+          "fallback key glow 50%",
+          "Copper Key Light (washes 4-24%, rule tail 15%, numeral stroke 85%)",
+          "Hot Copper",
+          "bevel highlight 50% (primary at rest)",
+          "bevel highlight 60% (primary on hover)"
         ]
       },
       "on-copper": {
@@ -138,15 +202,12 @@
         "displayName": "Umber Label",
         "canonical": "#1A1006",
         "oklch": "oklch(18.3% 0.026 66.7)",
+        "rampFamily": "on-copper",
         "tonalRamp": [
-          "#120902",
-          "#2D2217",
-          "#493D31",
-          "#685B4F",
-          "#8B7E70",
-          "#AD9F91",
-          "#D3C4B6",
-          "#FBECDD"
+          "#1A1006"
+        ],
+        "rampLabels": [
+          "Umber Label: text and icons on copper"
         ]
       },
       "paper": {
@@ -154,15 +215,16 @@
         "displayName": "Paper Stock",
         "canonical": "#EFE8DC",
         "oklch": "oklch(93.3% 0.018 81.3)",
+        "rampFamily": "paper",
         "tonalRamp": [
-          "#0F0A04",
-          "#28231A",
-          "#453F35",
-          "#635D53",
-          "#867F75",
-          "#A7A195",
-          "#CDC6BB",
-          "#F5EEE2"
+          "#3B2812",
+          "#5E4B35",
+          "#EFE8DC"
+        ],
+        "rampLabels": [
+          "Bronze Ink (paper grain 9%, fallback room pool 34%)",
+          "Faded Ink",
+          "Paper Stock"
         ]
       },
       "paper-ink": {
@@ -170,15 +232,16 @@
         "displayName": "Bronze Ink",
         "canonical": "#3B2812",
         "oklch": "oklch(29.4% 0.045 68.6)",
+        "rampFamily": "paper",
         "tonalRamp": [
-          "#140800",
-          "#322009",
-          "#4F3B25",
-          "#6F5942",
-          "#927C64",
-          "#B59D84",
-          "#DBC3A9",
-          "#FFEBD6"
+          "#3B2812",
+          "#5E4B35",
+          "#EFE8DC"
+        ],
+        "rampLabels": [
+          "Bronze Ink (paper grain 9%, fallback room pool 34%)",
+          "Faded Ink",
+          "Paper Stock"
         ]
       },
       "paper-mut": {
@@ -186,15 +249,16 @@
         "displayName": "Faded Ink",
         "canonical": "#5E4B35",
         "oklch": "oklch(42.7% 0.043 70.4)",
+        "rampFamily": "paper",
         "tonalRamp": [
-          "#140800",
-          "#31200B",
-          "#4E3C26",
-          "#6D5A43",
-          "#917C65",
-          "#B39D85",
-          "#DAC3AA",
-          "#FFEBD5"
+          "#3B2812",
+          "#5E4B35",
+          "#EFE8DC"
+        ],
+        "rampLabels": [
+          "Bronze Ink (paper grain 9%, fallback room pool 34%)",
+          "Faded Ink",
+          "Paper Stock"
         ]
       },
       "cloth-grey": {
@@ -202,15 +266,14 @@
         "displayName": "Logo Grey",
         "canonical": "#666464",
         "oklch": "oklch(50.5% 0.003 17.2)",
+        "rampFamily": "cloth",
         "tonalRamp": [
-          "#0C0B0B",
-          "#252323",
-          "#413F3F",
-          "#5F5D5D",
-          "#828080",
-          "#A3A1A1",
-          "#C9C7C7",
-          "#F0EEEE"
+          "#3B2812",
+          "#666464"
+        ],
+        "rampLabels": [
+          "Bronze Ink, painted into the cloth",
+          "Logo Grey, painted into the cloth; 10% pool in the fallback room"
         ]
       }
     },
@@ -262,6 +325,66 @@
       "label": {
         "displayName": "Label",
         "purpose": "Uppercase group title for a panel of rows (from 900px) and the card letterhead. Never above a heading."
+      },
+      "scale": {
+        "displayName": "Fixed steps",
+        "purpose": "The enumerated ramp of fixed sizes beside the fluid roles.",
+        "steps": {
+          "letterhead": "0.6875rem: card letterhead",
+          "label": "0.8125rem: Label, card URL",
+          "meta": "0.875rem: Meta",
+          "ui": "0.9375rem: Share pill, tabs, role line minimum",
+          "row": "1rem: row names, ghost/sheet buttons, step text",
+          "body": "1.0625rem: Body, Save contact",
+          "title": "1.125rem: step titles",
+          "card-name": "1.25rem: name on the card",
+          "voice": "1.5rem: cover pitch on short windows",
+          "sheet-title": "1.75rem: sheet title",
+          "voice-cover": "1.875rem: cover pitch maximum"
+        }
+      }
+    },
+    "roundedMeta": {
+      "grip": {
+        "value": "3px",
+        "purpose": "The share sheet's grip, a capsule on a 5px bar."
+      },
+      "focus": {
+        "value": "6px",
+        "purpose": "The keyboard focus outline (2px Hot Copper at a 3px offset)."
+      },
+      "control-inner": {
+        "value": "10px",
+        "purpose": "Inner corner of a 14px control with a 4px inset: the segmented thumb and tabs. The skip link uses it too."
+      },
+      "control": {
+        "value": "14px",
+        "purpose": "Buttons and the segmented track."
+      },
+      "card": {
+        "value": "18px",
+        "purpose": "The paper business card."
+      },
+      "surface-inner": {
+        "value": "19px",
+        "purpose": "A panel body, concentric with the 20px surface and its 1px edge; authored as calc(var(--r-surface) - 1px)."
+      },
+      "surface": {
+        "value": "20px",
+        "purpose": "Panels."
+      },
+      "popover": {
+        "value": "24px",
+        "purpose": "The share popover from 700px."
+      },
+      "sheet": {
+        "value": "26px",
+        "purpose": "Top corners of the phone bottom sheet."
+      },
+      "round": {
+        "value": "999px",
+        "role": "pill",
+        "purpose": "The Share pill; the K mark and the close button are 50% circles."
       }
     },
     "shadows": [
@@ -462,9 +585,9 @@
       "name": "Pull Quote",
       "kind": "custom",
       "refersTo": "quote",
-      "description": "The one pull quote: serif italic in Hot Copper with a 1px copper rule fading downward.",
+      "description": "The one pull quote: serif italic in Hot Copper with a 1px copper rule fading downward; held to 24ch from 900px so it balances onto two lines.",
       "html": "<div class=\"ds-stage\"><p class=\"ds-pull\">The creative is the campaign. The reporting is the relationship.</p></div>",
-      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-pull{position:relative;margin:0;padding-left:clamp(18px,4vw,28px);font-family:var(--serif,\"Instrument Serif\",\"Iowan Old Style\",Charter,Georgia,serif);font-style:italic;font-weight:400;font-size:clamp(1.625rem,5.4vw,2.25rem);line-height:1.16;letter-spacing:-.008em;color:var(--copper-hot,#E8B676);text-wrap:balance}.ds-pull::before{content:'';position:absolute;left:0;top:.18em;bottom:.14em;width:1px;background:linear-gradient(180deg,var(--copper,#D39E5A),rgba(211,158,90,.15))}"
+      "css": ".ds-stage{background:var(--night,#0A0908);padding:24px;border-radius:16px}.ds-pull{position:relative;margin:0;padding-left:clamp(18px,4vw,28px);font-family:var(--serif,\"Instrument Serif\",\"Iowan Old Style\",Charter,Georgia,serif);font-style:italic;font-weight:400;font-size:clamp(1.625rem,5.4vw,2.25rem);line-height:1.16;letter-spacing:-.008em;color:var(--copper-hot,#E8B676);text-wrap:balance}.ds-pull::before{content:'';position:absolute;left:0;top:.18em;bottom:.14em;width:1px;background:linear-gradient(180deg,var(--copper,#D39E5A),rgba(211,158,90,.15))}@media (min-width:900px){.ds-pull{max-width:24ch}}"
     },
     {
       "name": "Audience List",
@@ -503,7 +626,7 @@
       },
       {
         "name": "The Lit Room Rule",
-        "body": "Text is tested against the brightest part of the room behind it, not against Studio Night. `tools/contrast.py` hides the text, takes the 98th-percentile luminance of the backdrop inside each text box (with the pointer parked on the element on desktop, pulling the light toward it), and computes the WCAG ratio. Every element passes AA; the lowest recorded is 4.6:1. On flat Studio Night the ratios are far higher (Bone 17.7:1, Worn Bone 10.5:1, Dim Stone 7.5:1, Copper 8.4:1), which is exactly why flat Night is not the test. Under `prefers-contrast: more`, Dim Stone lifts to #B9AE9F, the ring to 40%, and row metadata switches to Worn Bone.",
+        "body": "Text is tested against the brightest part of the room behind it, not against Studio Night. `tools/contrast.py` hides the text, takes the 98th-percentile luminance of the backdrop inside each text box (with the pointer parked on the element on desktop, pulling the light toward it), and computes the WCAG ratio. Every element passes AA; the lowest recorded is 4.99:1 (phone, tablet and desktop, final build). On flat Studio Night the ratios are far higher (Bone 17.7:1, Worn Bone 10.5:1, Dim Stone 7.5:1, Copper 8.4:1), which is exactly why flat Night is not the test. Under `prefers-contrast: more`, Dim Stone lifts to #B9AE9F, the ring to 40%, and row metadata switches to Worn Bone.",
         "section": "colors"
       },
       {

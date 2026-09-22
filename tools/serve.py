@@ -9,7 +9,11 @@ os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 class H(http.server.SimpleHTTPRequestHandler):
     protocol_version = 'HTTP/1.1'
     def end_headers(self):
-        self.send_header('Cache-Control', 'no-store')
+        # mirror vercel.json: fonts are immutable, everything else revalidates
+        if '/assets/fonts/' in self.path:
+            self.send_header('Cache-Control', 'public, max-age=31536000, immutable')
+        else:
+            self.send_header('Cache-Control', 'no-cache')
         super().end_headers()
     def log_message(self, *a): pass
 port = int(sys.argv[1]) if len(sys.argv) > 1 else 8787

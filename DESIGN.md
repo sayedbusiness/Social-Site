@@ -83,9 +83,28 @@ typography:
     fontSize: "0.8125rem"
     fontWeight: 600
     letterSpacing: "0.06em"
+  scale:
+    letterhead: "0.6875rem"
+    label: "0.8125rem"
+    meta: "0.875rem"
+    ui: "0.9375rem"
+    row: "1rem"
+    body: "1.0625rem"
+    title: "1.125rem"
+    card-name: "1.25rem"
+    voice: "1.5rem"
+    sheet-title: "1.75rem"
+    voice-cover: "1.875rem"
 rounded:
+  grip: "3px"
+  focus: "6px"
+  control-inner: "10px"
   control: "14px"
+  card: "18px"
+  surface-inner: "19px"
   surface: "20px"
+  popover: "24px"
+  sheet: "26px"
   round: "999px"
 spacing:
   gutter: "clamp(16px, 5vw, 40px)"
@@ -128,7 +147,7 @@ components:
   segmented-thumb:
     backgroundColor: "rgba(243,241,239,.11)"
     textColor: "{colors.bone}"
-    rounded: "10px"
+    rounded: "{rounded.control-inner}"
     height: "44px"
   panel:
     backgroundColor: "rgba(15,13,11,.84)"
@@ -147,7 +166,7 @@ components:
   card-paper:
     backgroundColor: "{colors.paper}"
     textColor: "{colors.paper-ink}"
-    rounded: "18px"
+    rounded: "{rounded.card}"
     padding: "18px 18px 16px"
     width: "300px"
   sheet:
@@ -158,7 +177,7 @@ components:
   popover:
     backgroundColor: "{colors.night-2}"
     textColor: "{colors.bone-2}"
-    rounded: "24px"
+    rounded: "{rounded.popover}"
     padding: "16px 20px 20px"
     width: "380px"
 ---
@@ -209,6 +228,14 @@ One warm light in a dark room: warm near-black grounds, bone type in three steps
 - **Dim Stone** (#A89E91): metadata. Row handles, panel titles, the sheet hint, row arrows. It is lighter than the Kova site's #958B7C on purpose: this room is lit.
 - **Hairline Ring** (rgba(243,241,239,.1)): the inset 1px ring on floating controls, the segmented track and the ghost button. Panel edges and row separators use the same bone at other strengths (16% to 7%, and 7%).
 
+### Tonal Ramps
+Every translucent or tinted value on the page is a strength of one of these five families; nothing sits outside them. The sidecar (`.impeccable/design.json`) carries each family as a `tonalRamp`, darkest first, listing only steps the build actually uses.
+- **Night ramp** (#000000, #040302, #060504, #080604, #0A0908, #0F0D0B): shadow black (drop shadows at 35% to 85%; in the portrait's fade mask black is only an alpha channel), the copper press shadow (50% to 90%), the sheet backdrop (62%), the voice scrim (60%), Studio Night (the bar scrim, 96% fading to 0), and smoked glass (the segmented track at 82%, panel bodies at 84%).
+- **Raised-night ramp** (#100D0A, #12100D, #161310, #17120D, #1B1814, #342D25): the fallback room's middle and top stops, Raised Night, the frosted fill under the Share pill and the scrolled K mark (42%), Night 3 (the solid glass fill under reduced transparency, and the sheet's top edge), and the hover smoke on the Share pill (55%).
+- **Bone ladder** (#A89E91, #B9AE9F, #C4BBAE, #D8D0C5, #F3F1EF, #FFFFFF): Dim Stone, Dim Stone under more contrast, Worn Bone, the Apply row's meta line, Bone, and pure white, which appears only as light: inset top-edge highlights at 6% to 8%, the card's top edge at 70%, and the card glint at 55%. Bone itself is the page's tint ladder: 4.5% row hover, 5% panel sheen, 6% row press, 7% separators, the ghost fill and the foot of a panel edge, 8% audience hairlines and the sheet ring, 9% the popover ring, 10% the Hairline Ring, 11% the segmented thumb, 12% ghost hover, 16% the head of a panel edge, 22% the grip, 35% the footer underline, and 40% the ring under more contrast.
+- **Copper ramp** (#281B0F, #5A3714, #603E1E, #966434, #D39E5A, #E8B676, #FFECD0, #FFF0D8): the fallback glow's edge (0%) and middle (26%), the press shade on the primary button's lower inner edge (30% to 35%), the fallback key glow (50%), Copper Key Light (washes at 4% to 24%, the pull-quote rule's tail at 15%, numeral strokes at 85%), Hot Copper, and the copper-lit bevel highlight on the primary button (50% at rest, 60% on hover).
+- **Paper ramp** (#3B2812, #5E4B35, #EFE8DC): Bronze Ink, Faded Ink and Paper Stock. The paper grain is Bronze Ink at 9%, and the fallback room's bronze pool is Bronze Ink at 34%. Logo Grey appears in the fallback room only as a 10% pool.
+
 ### Named Rules
 **The One Light Rule.** Copper is the only hue on the page, and it behaves like light. It marks the one primary action, a few typographic accents, and hover. There is no second accent and no blue anywhere, in UI or in imagery.
 
@@ -235,6 +262,8 @@ One warm light in a dark room: warm near-black grounds, bone type in three steps
 - **Control** (Archivo 600, +0.005em): Save contact at 1.0625rem; ghost and sheet buttons and row names at 1rem; the Share pill and the tabs at 0.9375rem. The role line ("Founder, Kova Media") uses the same face at `clamp(.9375rem, 3.9vw, 1.0625rem)`, line-height 1.3, +0.01em, in copper.
 - **Meta** (Archivo 400, 0.875rem): row handles and addresses, the sheet hint, the footer.
 - **Label** (Archivo 600, 0.8125rem, +0.06em, uppercase, Dim Stone): the title that names a group of rows (the two link panels, from 900px). The card's letterhead uses the same treatment at 0.6875rem, +0.08em, in Faded Ink.
+
+**Fixed steps.** Besides the fluid roles, the page uses eleven fixed sizes, recorded as `typography.scale` in the frontmatter: 0.6875rem (the card letterhead), 0.8125rem (Label), 0.875rem (Meta), 0.9375rem (the Share pill, the tabs, and the role line's minimum), 1rem (row names, ghost and sheet buttons, step text), 1.0625rem (Body and Save contact), 1.125rem (Title), 1.25rem (the name on the card), 1.5rem (the cover pitch on short windows), 1.75rem (the sheet title) and 1.875rem (the cover pitch's maximum). A new size joins this ladder or a fluid role.
 
 ### Named Rules
 **The Three Voices Rule.** Width-125 capitals name things: the person, the audience, the steps, the name on the card. Serif italic is Sayed speaking: the pitch, section headings, the pull quote, the sheet title. Archivo 400 and 600 does everything else. A new element joins one of the three voices; it never mixes them.
@@ -306,7 +335,7 @@ After first paint, `assets/backdrop.js` takes over with one full-screen triangle
 
 Soft, consistent corners; hairlines instead of borders; forms cut by masks.
 
-- **Corners.** Controls are gently rounded at 14px (buttons, the segmented track). Surfaces are 20px (panels). The business card is 18px. The share sheet is 26px on its top corners on phones and 24px all round as a popover. Floating controls are fully round (the Share pill at 999px; the K mark and the close button are circles). The skip link is 10px, and the focus outline follows a 6px radius.
+- **Corners.** One scale, smallest first: the sheet grip at 3px (a capsule on a 5px bar); the focus outline at 6px; the inner corner of a control at 10px (the segmented thumb and tabs, concentric with the 14px track, and the skip link); controls at 14px (buttons, the segmented track); the business card at 18px; a panel body at 19px (concentric with its 20px edge, written as `calc(var(--r-surface) - 1px)` so it follows the surface radius); surfaces at 20px (panels); the popover at 24px; the phone sheet at 26px on its top corners; and fully round for floating controls (the Share pill at 999px; the K mark and the close button are circles).
 - **Lines.** Every edge and divider is 1px. Row separators start at the text column (54px in) and stop 18px short of the right edge. Audience lines sit between 8% bone hairlines. The pull quote has a 1px rule that fades from Copper Key Light to 15% copper.
 - **Masks.** The portrait fades out at the bottom through a mask (solid to 66%, 55% at 84%, gone by 99% on phones; 72%, 88% and 100% on the cover). The K mark and the Kova wordmark are PNG masks filled with the current colour, so they recolour for the paper card and for forced colours.
 - **QR.** Rounded modules (corner radius 0.3 of a module) and rounded-square finder patterns, in Bronze Ink.

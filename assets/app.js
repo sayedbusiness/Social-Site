@@ -107,6 +107,19 @@
     });
   }
 
+  /* ── in-app browsers (Instagram, Facebook, TikTok, LinkedIn, Snapchat) run
+        their own web view, which drops a .vcf instead of opening Contacts.
+        Say so under the button rather than let the tap fail silently. */
+  const ua = navigator.userAgent || '';
+  if (/Instagram|FBAN|FBAV|FB_IAB|FBIOS|musical_ly|TikTok|BytedanceWebview|LinkedInApp|Snapchat/i.test(ua)) {
+    const tip = $('[data-inapp]');
+    if (tip) {
+      const b = $('[data-browser]', tip);
+      if (b) b.textContent = /iPhone|iPad|iPod/i.test(ua) ? 'Safari' : 'Chrome';
+      tip.hidden = false;
+    }
+  }
+
   /* ── entrances: three authored ones, not one effect on every block.
         The link rows deal in, the audience lines rise like the name, the pull
         quote's rule draws. Only content still below the fold is armed, so

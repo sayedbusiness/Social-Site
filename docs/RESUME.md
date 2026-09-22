@@ -52,6 +52,22 @@ An independent impeccable finish review returned REBUILD on the hero sitting. Do
 Still open from the review: a relit portrait and a photographed cloth need real
 images (Sayed: see docs/IMAGE-PROMPTS.md).
 
+## Pre-launch pass (2026-09-21)
+- Verified in THREE engines: WebKit (Safari's engine) 30/30 sizes, Firefox 13/13 desktop,
+  Chrome 30/30. Run with `python3 tools/qa.py <dir> --engine=webkit|firefox` (Chrome default).
+- **No font preloads, on purpose.** Measured with a logging server: Safari reuses a font
+  preload only WITHOUT `crossorigin`, Chrome only WITH it, so either form downloads each font
+  twice somewhere. The inlined @font-face rules start the fetch at first style anyway.
+- One @font-face per font file. A second family name on the same URL (the old
+  "Archivo Display") made Chrome download Archivo twice.
+- In-app browsers (Instagram, Facebook, TikTok, LinkedIn, Snapchat) cannot hand a .vcf to
+  Contacts, so a one-line tip under Save contact says to open the page in Safari/Chrome.
+  It appears only in those browsers.
+- iOS 15 has no `overflow:clip`: html, body and .hero declare `overflow-x:hidden` first.
+- Links checked live: kovamedia.agency and /apply return 200. Both TikToks and both YouTube
+  channels exist. Instagram, X, Facebook and LinkedIn block automated checks; those URLs
+  come from Sayed's own site and reference page.
+
 ## Gotchas already paid for
 - The hero grid needs `grid-template-columns:minmax(0,1fr)`. An auto column grows to the
   oversized portrait and silently shifts the name off-centre, and the hero's clip hides it.

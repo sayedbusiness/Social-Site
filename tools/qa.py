@@ -97,7 +97,7 @@ PROBE = r"""
   out.info = {l: Math.round(info.left), r: Math.round(info.right), t: Math.round(info.top), b: Math.round(info.bottom)};
   out.infoOverFig = out.cover ? Math.max(0, Math.round(fig.left + fig.width * 0.915 - info.left)) : 0;
   out.gl = document.documentElement.classList.contains('gl');
-  out.fonts = document.fonts.check('800 40px "Archivo Display"') && document.fonts.check('italic 20px "Instrument Serif"');
+  out.fonts = document.fonts.check('800 40px "Archivo"') && document.fonts.check('italic 20px "Instrument Serif"');
   const pitch = document.querySelector('.pitch');
   out.pitchLines = Math.round(pitch.getBoundingClientRect().height / parseFloat(getComputedStyle(pitch).lineHeight));
   out.overflowX = out.scrollW - vw;
@@ -119,10 +119,18 @@ def main():
     results = []
     failed = False
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome", headless=True, args=["--enable-gpu", "--ignore-gpu-blocklist", "--use-angle=metal"])
+        engine = next((x.split("=", 1)[1] for x in sys.argv[1:] if x.startswith("--engine=")), "chrome")
+        if engine == "webkit":
+            browser = p.webkit.launch(headless=True)
+        elif engine == "firefox":
+            browser = p.firefox.launch(headless=True)
+        else:
+            browser = p.chromium.launch(channel="chrome", headless=True, args=["--enable-gpu", "--ignore-gpu-blocklist", "--use-angle=metal"])
         for name, w, h, dpr, mobile in SIZES:
             if only and name not in only:
                 continue
+            if engine == "firefox" and mobile:
+                continue   # Firefox has no mobile emulation; phones are covered by WebKit and Chrome
             ctx = browser.new_context(viewport={"width": w, "height": h}, device_scale_factor=dpr, is_mobile=mobile, has_touch=mobile)
             page = ctx.new_page()
             errors = []
